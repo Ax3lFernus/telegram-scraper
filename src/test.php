@@ -6,8 +6,8 @@ use danog\MadelineProto\API;
 $MadelineProto = new API('session.madeline');
 $MadelineProto->updateSettings([
     'app_info' => [
-        'api_id' => 2846104,
-        'api_hash' => 'e21600b8ff695b771a2a8968eab84179'
+        'api_id' => ,
+        'api_hash' => ''
     ]
 ]);
 $MadelineProto->start();
