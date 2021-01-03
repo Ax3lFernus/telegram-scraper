@@ -1,0 +1,15 @@
+{
+    "name": "ax3lfernus/telegramscraper",
+    "description": "A simple Telegram Scraper.",
+    "type": "project",
+    "require": {
+        "danog/madelineproto": "^5.1"
+    },
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Alessandro Annese",
+            "email": "a.annese23@studenti.uniba.it"
+        }
+    ]
+}
