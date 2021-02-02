@@ -3,7 +3,7 @@
     "description": "A simple Telegram Scraper.",
     "type": "project",
     "require": {
-        "danog/madelineproto": "^5.1"
+        "vlucas/phpdotenv": "^5.3"
     },
     "license": "AGPL-3.0-only",
     "authors": [
