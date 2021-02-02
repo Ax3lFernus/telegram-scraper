@@ -47,6 +47,7 @@ $("#login").submit(function (e) {
                 let json = JSON.parse(result);
                 if (json.success) {
                     $("#form-btn").text("Fatto!");
+                    location.href = 'message.php'
                 } else {
                     //ERRORE DI VERIFICA CODICE
                     $("#form-btn").text("Codice errato");
