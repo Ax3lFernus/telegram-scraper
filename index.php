@@ -10,7 +10,11 @@
     <form id="login">
         <img class="mb-4" src="https://telegram.org/img/t_logo.svg?1" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Accedi</h1>
-
+        <?php
+        if(isset($_GET['ERROR'])) echo "<p class=\"text-danger font-weight-bold\">Si è verificato un errore.</p>";
+        if(isset($_GET['PHONE_INVALID'])) echo "<p class=\"text-danger font-weight-bold\">Il numero di telefono è errato.</p>";
+        if(isset($_GET['PHONE_CODE_INVALID'])) echo "<p class=\"text-danger font-weight-bold\">Il codice di verifica è errato.</p>";
+        ?>
         <label for="inputPhone" class="visually-hidden">Numero di telefono:</label>
         <input type="tel" id="inputPhone" class="form-control" pattern="^\+[0-9]{2,3}[0-9]{8,10}$"
                placeholder="+391234567890" required autofocus>

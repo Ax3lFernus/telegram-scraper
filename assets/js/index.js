@@ -9,6 +9,7 @@ $("#login").submit(function (e) {
     if ($("#inputCode").is(":hidden")) {
         $("#form-btn").prop("disabled", true).text("Invio il codice via Telegram...");
         $("#inputPhone").prop("disabled", true);
+        $(".text-danger").hide();
         //Creo sessione & richiedo il codice di verifica
         $.ajax({
             type: "POST",
@@ -25,16 +26,17 @@ $("#login").submit(function (e) {
                     $("#inputCode").prop("required", true).show();
                     $("#form-btn").prop("disabled", false).text("Accedi");
                 } else {
-                    //ERRORE DI RICHIESTA CODICE TELEGRAM
+                    window.location = 'index.php?PHONE_INVALID=E';
                 }
             },
             error: (e) => {
-                console.log("Error", e);
+                window.location = 'index.php?ERROR=E';
             }
         });
     } else {
         $("#form-btn").prop("disabled", true).text("Accesso in corso...");
         $("#inputCode").prop("disabled", true);
+        $(".text-danger").hide();
         //Accedo con il codice
         $.ajax({
             type: "POST",
@@ -49,13 +51,12 @@ $("#login").submit(function (e) {
                     $("#form-btn").text("Fatto!");
                     location.href = 'message.php'
                 } else {
-                    //ERRORE DI VERIFICA CODICE
-                    $("#form-btn").text("Codice errato");
+                    window.location = 'index.php?PHONE_CODE_INVALID=E';
                 }
             },
             error: (e) => {
                 Cookies.remove('token');
-                console.log("Error", e);
+                window.location = 'index.php?ERROR=E';
             }
         });
     }

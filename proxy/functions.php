@@ -38,3 +38,9 @@ function curlPOST($url, $body)
     curl_close($ch);
     return $output;
 }
+
+function deleteMadelineSession($token){
+    global $baseUrl;
+    curl($baseUrl . "system/removeSession?session=users/" . $token);
+    curl($baseUrl . "system/unlinkSessionFile?session=users/" . $token);
+}

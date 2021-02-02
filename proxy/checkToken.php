@@ -13,20 +13,20 @@ if (isset($_COOKIE['token'])) {
             }
         }
         if ($find) {
-            if (basename($_SERVER['REQUEST_URI']) == 'index.php') {
+            if (str_contains($_SERVER['REQUEST_URI'], 'index.php')) {
                 header('Location: message.php');
                 die();
             }
         } else {
             setcookie("token", "", time() - 3600);
-            if (basename($_SERVER['REQUEST_URI']) != 'index.php') {
+            if (!str_contains($_SERVER['REQUEST_URI'], 'index.php')) {
                 header('Location: index.php');
                 die();
             }
         }
     }
 }else{
-    if (basename($_SERVER['REQUEST_URI']) != 'index.php') {
+    if (!str_contains($_SERVER['REQUEST_URI'], 'index.php')) {
         header('Location: index.php');
         die();
     }
