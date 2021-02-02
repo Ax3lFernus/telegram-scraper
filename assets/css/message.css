@@ -9,3 +9,22 @@ body {
   background-color: #f5f5f5;
 }
 
+.card
+{
+  border-radius: 20px;
+}
+
+.card-body
+{
+  padding-left: 5px
+}
+
+.card-text
+{
+  text-align: left
+}
+
+.form-check
+{
+  margin: auto 0;padding: 0
+}
