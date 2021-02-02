@@ -19,7 +19,7 @@
                placeholder="+391234567890" required autofocus>
 
         <label for="inputCode" class="visually-hidden">Codice di sicurezza:</label>
-        <input type="text" id="inputCode" class="form-control" placeholder="123456" pattern="^[0-9]{4,7}$"
+        <input type="password" id="inputCode" class="form-control" placeholder="123456" pattern="^[0-9]{4,7}$"
                style="display:none">
 
         <button id="form-btn" class="w-100 btn btn-lg btn-primary" type="submit">Invia codice</button>
