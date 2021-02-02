@@ -1,4 +1,8 @@
 <?php
+    if (isset($_COOKIE['token'])) { //Verificare che il token corrisponda ad una sessione valida
+        header('Location: ./message.php');
+        die();
+    }
     $style = "<link href=\"assets/css/signin.css\" rel=\"stylesheet\">";
     $page_title = "Login";
     require('layouts/head.php');
