@@ -22,7 +22,7 @@ $("#login").submit(function (e) {
                 let json = JSON.parse(result);
                 if (json.success) {
                     Cookies.set('token', json.token);
-                    $("#inputPhone").css('border-bottom-left-radius', 0).css('border-bottom-right-radius', 0).css('margin-bottom', '-1px');
+                    $("#inputBox").show();
                     $("#inputCode").prop("required", true).show();
                     $("#form-btn").prop("disabled", false).text("Accedi");
                 } else {
