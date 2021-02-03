@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/proxy/checkToken.php';
+//require __DIR__ . '/proxy/checkToken.php';
 $style = "<link href=\"assets/css/message.css\" rel=\"stylesheet\">";
 $page_title = "Messaggi";
 require 'layouts/head.php';
@@ -76,13 +76,17 @@ require 'layouts/head.php';
         <div class="row mt-4">
             <div class="col-sm-3"></div>
             <div class="col-sm-3"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" type="date"
-                                                                                      value="<?php echo date('Y-m-d'); ?>"
+                                                                                      value='2013-08-14'
                                                                                       min='1999-01-01'
+                                                                                      class="form-control is-valid"
                                                                                       max="<?php echo date('Y-m-d'); ?>">
+                <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
             <div class="col-sm-3"><label for="dataFine">Data fine:</label> <input id="dataFine" type="date"
                                                                                   value= <?php echo date('Y-m-d'); ?> min='1999-01-01'
+                                                                                  class="form-control is-valid"
                                                                                   max="<?php echo date('Y-m-d'); ?>">
+                <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
             <div class="col-sm-3"></div>
         </div>
@@ -93,6 +97,12 @@ require 'layouts/head.php';
             <div class="col-sm-5"></div>
         </div>
     </fieldset>
+    <div class="row mt-3">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2"><button id="csv" class="btn btn-success" type="button">Download csv</button></div>
+        <div class="col-sm-2"><button id="json" class="btn btn-success" type="button">Download json</button></div>
+        <div class="col-sm-4"></div>
+    </div>
 </div>
 
 <!-- Modal -->
