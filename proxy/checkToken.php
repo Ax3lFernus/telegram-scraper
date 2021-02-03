@@ -13,7 +13,7 @@ if (isset($_COOKIE['token'])) {
             }
         }
         if ($find) {
-            if (str_contains($_SERVER['REQUEST_URI'], 'index.php')) {
+            if (!str_contains($_SERVER['REQUEST_URI'], 'message.php')) {
                 header('Location: message.php');
                 die();
             }
