@@ -85,3 +85,12 @@ $('.card').on('click', function (e) {
         $checkbox.prop('checked', !$checkbox.prop('checked'));
     }
 });
+
+$(document).ready(function(){
+    $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("div.card").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});

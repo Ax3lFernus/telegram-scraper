@@ -18,13 +18,14 @@ require 'layouts/head.php';
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
             <div class="col"></div>
-            <div class="col-2">
+            <div class="col-2" style="margin: auto 0;">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="check_all_chats">
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
                 </div>
             </div>
-            <div class="col"></div>
+            <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Search.."></div>
+            <div class="col-3"></div>
         </div>
         <!-- Lista chat -->
         <div class="row mt-3">
