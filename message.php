@@ -30,14 +30,14 @@ require 'layouts/head.php';
         <div class="row mt-3">
             <div class="col"></div>
             <div class="col-4">
-                <div class="card mb-3 text-center">
+                <div class="card mb-3 text-center" role="button">
                     <div class="row g-0">
                         <div class="col-md-2" style=" margin:auto 0">
                             <i class="fas fa-user fa-lg"></i>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <p class="card-text">
+                                <p class="card-text user-select-none">
                                     Vita Barletta
                                 </p>
                             </div>
@@ -50,14 +50,14 @@ require 'layouts/head.php';
                 </div>
             </div>
             <div class="col-4">
-                <div class="card mb-3 text-center">
+                <div class="card mb-3 text-center" role="button">
                     <div class="row g-0">
                         <div class="col-md-2" style=" margin:auto 0">
                             <i class="fas fa-user fa-lg"></i>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <p class="card-text">
+                                <p class="card-text user-select-none">
                                     Vita Barletta
                                 </p>
                             </div>
@@ -99,8 +99,12 @@ require 'layouts/head.php';
     </fieldset>
     <div class="row mt-3">
         <div class="col-sm-4"></div>
-        <div class="col-sm-2"><button id="csv" class="btn btn-success" type="button">Download csv</button></div>
-        <div class="col-sm-2"><button id="json" class="btn btn-success" type="button">Download json</button></div>
+        <div class="col-sm-2">
+            <button id="csv" class="btn btn-success" type="button">Download csv</button>
+        </div>
+        <div class="col-sm-2">
+            <button id="json" class="btn btn-success" type="button">Download json</button>
+        </div>
         <div class="col-sm-4"></div>
     </div>
 </div>

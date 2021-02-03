@@ -78,3 +78,10 @@ $("input[type=checkbox]").click(() => {
     else
         $("#check_all_chats").prop('checked', false);
 });
+
+$('.card').on('click', function (e) {
+    if (!$(e.target).is('input:checkbox')) {
+        let $checkbox = $(this).find('input:checkbox');
+        $checkbox.prop('checked', !$checkbox.prop('checked'));
+    }
+});
