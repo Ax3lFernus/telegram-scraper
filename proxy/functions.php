@@ -7,7 +7,8 @@ $dotenv->required('TELEGRAM_API_SERVER_BASE_URL')->notEmpty();
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
 
-function generateRandomString($length = 10) {
+function generateRandomString($length = 10)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -17,7 +18,8 @@ function generateRandomString($length = 10) {
     return $randomString;
 }
 
-function curl($url){
+function curl($url)
+{
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -39,7 +41,8 @@ function curlPOST($url, $body)
     return $output;
 }
 
-function deleteMadelineSession($token){
+function deleteMadelineSession($token)
+{
     global $baseUrl;
     curl($baseUrl . "system/removeSession?session=users/" . $token);
     curl($baseUrl . "system/unlinkSessionFile?session=users/" . $token);

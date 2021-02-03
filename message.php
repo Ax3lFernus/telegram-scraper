@@ -1,5 +1,6 @@
 <?php
-//require __DIR__ . '/proxy/checkToken.php';
+require __DIR__ . '/proxy/checkToken.php';
+require __DIR__ . '/proxy/getDialogs.php';
 $style = "<link href=\"assets/css/message.css\" rel=\"stylesheet\">";
 $page_title = "Messaggi";
 require 'layouts/head.php';
@@ -27,7 +28,46 @@ require 'layouts/head.php';
             <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Search.."></div>
             <div class="col-3"></div>
         </div>
-        <!-- Lista chat -->
+        <?php
+        for ($i = 0; $i < count($chat_list);) {
+            echo '<div class="row mt-3"><div class="col"></div>';
+            echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
+                  <div class="col-md-2" style=" margin:auto 0">
+                      <img src="./proxy/profilePicture.php?peer_type=' . $chat_list[$i]['peerType'] .'&peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
+                  </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text user-select-none">
+                                ' . $chat_list[$i]['name'] . '
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 form-check">
+                        <input type="checkbox" name="user">
+                    </div>
+                  </div></div></div>';
+            $i++;
+            if(isset($chat_list[$i]))
+                echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
+                  <div class="col-md-2" style=" margin:auto 0">
+                      <img src="./proxy/profilePicture.php?peer_type=' . $chat_list[$i]['peerType'] .'&peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
+                  </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text user-select-none">
+                                ' . $chat_list[$i]['name'] . '
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 form-check">
+                        <input type="checkbox" name="user">
+                    </div>
+                  </div></div></div>';
+            echo '<div class="col"></div></div>';
+            $i++;
+        }
+        ?>
+        <!-- Lista chat
         <div class="row mt-3">
             <div class="col"></div>
             <div class="col-4">
@@ -39,7 +79,7 @@ require 'layouts/head.php';
                         <div class="col-md-8">
                             <div class="card-body">
                                 <p class="card-text user-select-none">
-                                    Vita Barletta
+                                    <?php echo $chat_list[0]['name']; ?>
                                 </p>
                             </div>
                         </div>
@@ -71,6 +111,7 @@ require 'layouts/head.php';
             </div>
             <div class="col"></div>
         </div>
+        Fine Lista chat -->
     </fieldset>
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona qualcosa ma non so che nome darti</legend>
