@@ -87,10 +87,45 @@ $('.card').on('click', function (e) {
 });
 
 $(document).ready(function(){
+    $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');
+
+    if ($(window).width() > 992) {
+        $(window).scroll(function(){
+            if ($(this).scrollTop() > 5) {
+                $('#navbar_top').addClass("fixed-top");
+                // add padding top to show content behind navbar
+                $('body').css('padding-top', $('.navbar').outerHeight() + 'px');
+            }else{
+                $('#navbar_top').removeClass("fixed-top");
+                // remove padding top from body
+                $('body').css('padding-top', '0');
+            }
+        });
+    }
+
     $("#search").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("div.card").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
+    });
+});
+
+$(function() {
+    function imageLoaded() {
+        counter--;
+        if( counter === 0 ) {
+            $('#modalLoading').modal('hide');
+        }
+    }
+    let images = $('img');
+    let counter = images.length;
+
+    images.each(function() {
+        if( this.complete ) {
+            imageLoaded.call( this );
+        } else {
+            $(this).one('load', imageLoaded);
+        }
     });
 });

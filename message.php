@@ -7,7 +7,7 @@ require 'layouts/head.php';
 ?>
 
 <body class="text-center">
-<nav class="navbar navbar-dark bg-dark px-3">
+<nav id="navbar_top" class="navbar navbar-dark bg-dark px-3">
     <a class="navbar-brand" href="#">
         <img src="https://telegram.org/img/t_logo.svg?1" width="30" height="30" class="d-inline-block align-top" alt="">
         Telegram Scraper
@@ -25,7 +25,7 @@ require 'layouts/head.php';
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
                 </div>
             </div>
-            <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Search.."></div>
+            <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Cerca tra le chat..."></div>
             <div class="col-3"></div>
         </div>
         <?php
@@ -157,7 +157,7 @@ require 'layouts/head.php';
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Caricamento...</h5>
+                <h5 class="modal-title" id="modalTitle">Caricamento delle chat in corso...</h5>
             </div>
             <div class="modal-body">
                 <div class="progress">
@@ -168,6 +168,7 @@ require 'layouts/head.php';
         </div>
     </div>
 </div>
+<p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020</p>
 <?php require('layouts/scripts.php'); ?>
 <script src="./assets/js/message.js"></script>
 </body>
