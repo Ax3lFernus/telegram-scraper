@@ -33,7 +33,7 @@ require 'layouts/head.php';
             echo '<div class="row mt-3"><div class="col"></div>';
             echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
                   <div class="col-md-2" style=" margin:auto 0">
-                      <img src="./proxy/profilePicture.php?peer_type=' . $chat_list[$i]['peerType'] .'&peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
+                      <img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
                   </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -50,7 +50,7 @@ require 'layouts/head.php';
             if(isset($chat_list[$i]))
                 echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
                   <div class="col-md-2" style=" margin:auto 0">
-                      <img src="./proxy/profilePicture.php?peer_type=' . $chat_list[$i]['peerType'] .'&peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
+                      <img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
                   </div>
                     <div class="col-md-8">
                         <div class="card-body">
