@@ -45,7 +45,7 @@ require 'layouts/head.php';
     <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
     <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
     <td><input type="checkbox" name="user"></td>
-  </tr>';
+  </tr><input type="hidden" value=' . $chat_list[$i]['peerID'] .' name="peerID"><input type="hidden" value='. $chat_list[$i]['name'] . ' name="name">';
  }
         echo '</tbody>
 </table></div>';
@@ -99,7 +99,7 @@ require 'layouts/head.php';
         Fine Lista chat -->
     </fieldset>
     <fieldset class="border mt-3 p-2">
-        <legend>Seleziona qualcosa ma non so che nome darti</legend>
+        <legend>Imposta i parametri</legend>
         <div class="row mt-4">
             <div class="col-sm-3"></div>
             <div class="col-sm-3"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" type="date"
