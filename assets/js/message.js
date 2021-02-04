@@ -116,6 +116,7 @@ $(function() {
         counter--;
         if( counter === 0 ) {
             $('#modalLoading').modal('hide');
+            $('#page_body').show();
         }
     }
     let images = $('img');

@@ -14,7 +14,7 @@ require 'layouts/head.php';
     </a>
     <button id="logout" class="btn btn-danger" type="button">Logout</button>
 </nav>
-<div class="container">
+<div id="page_body" class="container" style="display:none;">
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
@@ -134,6 +134,7 @@ require 'layouts/head.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
+    <p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020-<?php echo date('Y');?></p>
 </div>
 
 <!-- Modal -->
@@ -153,7 +154,6 @@ require 'layouts/head.php';
         </div>
     </div>
 </div>
-<p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020</p>
 <?php require('layouts/scripts.php'); ?>
 <script src="./assets/js/message.js"></script>
 </body>

@@ -27,7 +27,7 @@
         </div>
 
         <button id="form-btn" class="w-100 btn btn-lg btn-primary mt-3" type="submit">Invia codice</button>
-        <p class="mt-5 mb-3 text-muted">TG Scraper &copy; 2020</p>
+        <p class="mt-5 mb-3 text-muted">TG Scraper &copy; 2020-<?php echo date('Y');?></p>
     </form>
 </main>
 <?php require('layouts/scripts.php'); ?>
