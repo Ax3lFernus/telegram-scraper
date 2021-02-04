@@ -8,7 +8,10 @@ if (isset($_COOKIE['token'])) {
             $info = curl($baseUrl . 'api/users/' . $token . '/getInfo?peer=' . $id);
             if (key($info->response) == 'Chat') {
                 //Chat di gruppo/Canali
-                $name = $info->response->Chat->title;
+                if (isset($info->response->Chat->title))
+                    $name = $info->response->Chat->title;
+                else
+                    continue;
             } else {
                 //Utente/Bot
                 if (isset($info->response->User->first_name)) {
@@ -24,5 +27,6 @@ if (isset($_COOKIE['token'])) {
             }
             array_push($chat_list, ['name' => $name, 'peerID' => $id]);
         }
+        $chat_list = array_reverse($chat_list);
     }
 }
