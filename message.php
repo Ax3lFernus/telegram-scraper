@@ -149,7 +149,7 @@ require 'layouts/head.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
-    <p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020</p>
+    <p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020-<?php echo date('Y');?></p>
 </div>
 
 <!-- Modal -->
