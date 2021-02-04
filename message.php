@@ -30,8 +30,8 @@ require 'layouts/head.php';
             <div class="col-3"></div>
         </div>
         <?php
-        echo '<div class="row mt-3"><div class="col"></div>';
- echo '<div class="col-7"><table class="table table-striped">
+        echo '<div class="row mt-3" style="height: 300px;overflow: auto;"><div class="col"></div>';
+ echo '<div class="col-7"><table class="table table-striped ">
   <thead>
   <tr>
     <th scope="col">Immagine profilo</th>
