@@ -25,47 +25,32 @@ require 'layouts/head.php';
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
                 </div>
             </div>
-            <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Cerca tra le chat..."></div>
+            <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Cerca tra le chat...">
+            </div>
             <div class="col-3"></div>
         </div>
         <?php
-        for ($i = 0; $i < count($chat_list);) {
-            echo '<div class="row mt-3"><div class="col"></div>';
-            echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
-                  <div class="col-md-2" style=" margin:auto 0">
-                      <img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
-                  </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text user-select-none">
-                                ' . $chat_list[$i]['name'] . '
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-2 form-check">
-                        <input type="checkbox" name="user">
-                    </div>
-                  </div></div></div>';
-            $i++;
-            if(isset($chat_list[$i]))
-                echo '<div class="col-4"><div class="card mb-3 text-center" role="button"><div class="row g-0">
-                  <div class="col-md-2" style=" margin:auto 0">
-                      <img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px">
-                  </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text user-select-none">
-                                ' . $chat_list[$i]['name'] . '
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-2 form-check">
-                        <input type="checkbox" name="user">
-                    </div>
-                  </div></div></div>';
-            echo '<div class="col"></div></div>';
-            $i++;
-        }
+        echo '<div class="row mt-3"><div class="col"></div>';
+ echo '<div class="col-6"><table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Immagine profilo</th>
+    <th scope="col">Nome</th>
+    <th scope="col">Seleziona</th>
+  </tr>
+  </thead>
+  <tbody id="myTable">';
+        for ($i = 0; $i < count($chat_list);$i++) {
+    echo' <tr>
+    <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
+    <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
+    <td><input type="checkbox" name="user"></td>
+  </tr>';
+ }
+        echo '</tbody>
+</table></div>';
+        echo '<div class="col"></div>
+</div>';
         ?>
         <!-- Lista chat
         <div class="row mt-3">
