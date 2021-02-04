@@ -8,7 +8,7 @@
 <body class="text-center">
 <main class="form-signin">
     <form id="login">
-        <img class="mb-4" src="https://telegram.org/img/t_logo.svg?1" alt="" width="72" height="57">
+        <img class="mb-4" src="<?php echo $link . '/assets/images/logo.svg'; ?>" alt="" width="100" height="100">
         <h1 class="h3 mb-3 fw-normal">Accedi</h1>
         <?php
         if(isset($_GET['ERROR'])) echo "<p class=\"text-danger font-weight-bold\">Si è verificato un errore.</p>";

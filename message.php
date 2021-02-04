@@ -9,7 +9,7 @@ require 'layouts/head.php';
 <body class="text-center">
 <nav id="navbar_top" class="navbar navbar-dark bg-dark px-3">
     <a class="navbar-brand" href="#">
-        <img src="https://telegram.org/img/t_logo.svg?1" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="<?php echo $link . '/assets/images/logo.svg'; ?>" width="30" height="30" class="d-inline-block align-top" alt="">
         Telegram Scraper
     </a>
     <button id="logout" class="btn btn-danger" type="button">Logout</button>
