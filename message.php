@@ -31,7 +31,7 @@ require 'layouts/head.php';
         </div>
         <?php
         echo '<div class="row mt-3"><div class="col"></div>';
- echo '<div class="col-6"><table class="table table-striped">
+ echo '<div class="col-7"><table class="table table-striped">
   <thead>
   <tr>
     <th scope="col">Immagine profilo</th>
