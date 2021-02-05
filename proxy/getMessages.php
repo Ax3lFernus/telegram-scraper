@@ -13,7 +13,6 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
             //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
             array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
         }
-        sleep(5);
     }
     header('Content-Type: application/json');
     echo json_encode($messages);
