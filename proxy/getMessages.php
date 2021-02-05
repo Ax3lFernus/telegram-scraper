@@ -7,7 +7,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
     $media = array();
     foreach ($chats as $chat){
-        $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=0&data[offset_date]=0&data[add_offset]=0&data[limit]=10&data[max_id]=0&data[min_id]=0');
+        $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=0&data[offset_date]=0&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
         foreach ($chat_messages->response->messages as $msg){
             if(isset($msg->action)) continue;
             //if(isset($msg->media)) $msg->message = "MEDIA"; //RECUPERA IL MEDIA

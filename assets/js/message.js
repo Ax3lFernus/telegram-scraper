@@ -138,12 +138,12 @@ getCSVFromArray = (array) => {
         csvContent += dataString;
     });
     let downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(new Blob(["\ufeff", csvContent]));
     let date = new Date($.now());
-    downloadLink.download = date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".csv";
+    downloadLink.setAttribute("href", URL.createObjectURL(new Blob(["\ufeff", csvContent])));
+    downloadLink.setAttribute("download", date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".csv");
     document.body.appendChild(downloadLink);
     downloadLink.click();
-    document.body.removeChild(downloadLink);
+    downloadLink.remove();
 }
 
 getJSONFromArray = (array) => {
