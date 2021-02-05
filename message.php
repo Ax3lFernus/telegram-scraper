@@ -9,7 +9,8 @@ require 'layouts/head.php';
 <body class="text-center">
 <nav id="navbar_top" class="navbar navbar-dark bg-dark px-3">
     <a class="navbar-brand" href="#">
-        <img src="<?php echo $link . '/assets/images/logo.svg'; ?>" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="<?php echo $link . '/assets/images/logo.svg'; ?>" width="30" height="30"
+             class="d-inline-block align-top" alt="">
         Telegram Scraper
     </a>
     <button id="logout" class="btn btn-danger" type="button">Logout</button>
@@ -18,86 +19,41 @@ require 'layouts/head.php';
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
-            <div class="col"></div>
-            <div class="col-2" style="margin: auto 0;">
+            <div class="col-3 ms-5" style="margin: auto 0;">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="check_all_chats">
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
                 </div>
             </div>
+            <div class="col"></div>
             <div class="col-3"><input class="form-control" id="search" type="text" placeholder="Cerca tra le chat...">
             </div>
-            <div class="col-3"></div>
         </div>
-        <?php
-        echo '<div class="row mt-3" style="height: 300px;overflow: auto;"><div class="col"></div>';
- echo '<div class="col-7"><table class="table table-striped">
-  <thead>
-  <tr>
-    <th scope="col">Immagine profilo</th>
-    <th scope="col">Nome</th>
-    <th scope="col">Seleziona</th>
-  </tr>
-  </thead>
-  <tbody id="myTable">';
-        for ($i = 0; $i < count($chat_list);$i++){
-    echo' <tr>
-    <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
-    <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
-    <td><input type="checkbox" name="user"></td>
-    <input type="hidden" value=' . $chat_list[$i]['peerID'] .' id="peerID" name="peerID"><input type="hidden" value='. $chat_list[$i]['name'] . ' id="name" name="name">
-  </tr>';
- }
-        echo '</tbody>
-</table></div>';
-        echo '<div class="col"></div>
-</div>';
-        ?>
-        <!-- Lista chat
-        <div class="row mt-3">
-            <div class="col"></div>
-            <div class="col-4">
-                <div class="card mb-3 text-center" role="button">
-                    <div class="row g-0">
-                        <div class="col-md-2" style=" margin:auto 0">
-                            <i class="fas fa-user fa-lg"></i>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <p class="card-text user-select-none">
-                                    <?php echo $chat_list[0]['name']; ?>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 form-check">
-                            <input type="checkbox" name="user">
-                        </div>
+        <div class="row mt-3" style="height: 300px;overflow: auto;">
+            <div class="col tableFixHead">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Immagine profilo</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Seleziona</th>
+                    </tr>
+                    </thead>
+                    <tbody id="chat_list">
+                    <?php
+                    for ($i = 0; $i < count($chat_list); $i++) {
+                        echo ' <tr>
+                                <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
+                                <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
+                                <td><input type="checkbox" name="user"></td>
+                                <input type="hidden" value=' . $chat_list[$i]['peerID'] . ' name="chatID"><input type="hidden" value=' . $chat_list[$i]['name'] . ' name="chatName">
+                              </tr>';
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card mb-3 text-center" role="button">
-                    <div class="row g-0">
-                        <div class="col-md-2" style=" margin:auto 0">
-                            <i class="fas fa-user fa-lg"></i>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <p class="card-text user-select-none">
-                                    Vita Barletta
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 form-check">
-                            <input type="checkbox" name="user">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col"></div>
-        </div>
-        Fine Lista chat -->
     </fieldset>
     <fieldset class="border mt-3 p-2">
         <legend>Imposta i parametri</legend>
@@ -135,7 +91,7 @@ require 'layouts/head.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
-    <p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020-<?php echo date('Y');?></p>
+    <p class="mt-5 pb-2 text-muted">TG Scraper &copy; 2020-<?php echo date('Y'); ?></p>
 </div>
 
 <!-- Modal -->

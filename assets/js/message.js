@@ -23,130 +23,35 @@ $("#logout").on('click', _ => {
         }
     });
 });
-/*
-$("#csv").on('click', _ => {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file csv in corso...');
-    $.ajax({
-        type: "GET",
-        dataType: "JSON",
-        url: serverUrl + "proxy/getMessages.php",
-        timeout: 120000,
-        success: (result) => {
-            console.log(result);
-            window.location = 'message.php';
-        },
-        error: (e) => {
-           // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-            window.location = 'message.php';
-        }
-    });
-});
 
-$("#json").on('click', _ => {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file json in corso...');
-    $.ajax({
-        type: "GET",
-        dataType: "JSON",
-        url: serverUrl + "proxy/json.php",
-        timeout: 120000,
-        success: (result) => {
-            console.log(result);
-            window.location = 'message.php';
-        },
-        error: (e) => {
-           // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-            window.location = 'message.php';
-        }
-    });
-});
-*/
-$("#csv,#json").click(function(){
-    if($("#dataInizio").val() > $("#dataFine").val())
-    {
+$("#csv,#json").click(function () {
+    if ($("#dataInizio").val() > $("#dataFine").val()) {
         $("#dataFine,#dataInizio").toggleClass("is-invalid");
     }
 
 });
 
-$("#check_all_chats").click(function(){
+$("#check_all_chats").click(function () {
     $("input[type=checkbox]").not(this).prop('checked', $(this).prop('checked'));
 });
 
 $("input[type=checkbox]").click(() => {
-    if($("input[name='user']:checked").length === $("input[name='user']").length)
+    if ($("input[name='user']:checked").length === $("input[name='user']").length)
         $("#check_all_chats").prop('checked', true);
     else
         $("#check_all_chats").prop('checked', false);
 });
 
-$("#csv").on('click', function (e) {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file csv in corso...');
-    $flag=0;
-    let $name_list = [];
-    let $id_list = [];
-    $('input[name=name]').each(function(){
-        if($(this).parent().find('input:checkbox').is(":checked")) {
-            $name_list.push($(this).val());
-        }
-        });
-
-    $('input[name=peerID]').each(function(){
-        if($(this).parent().find('input:checkbox').is(":checked")) {
-            $id_list.push($(this).val());
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: serverUrl + "proxy/getMessages.php",
-            data: {id_list: $id_list, name_list:$name_list, flag:$flag},
-            timeout: 120000,
-            success: (result) => {
-                console.log(result);
-                window.location = 'message.php';
-            },
-                error: (e) => {
-                    // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-                    window.location = 'message.php';
-                }
-        });
-    });
+$("#csv").on('click', _ => {
+    //$('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+    //$('#modalTitle').text('Creazione file json in corso...');
+    sendChats('csv');
 });
 
-$("#json").on('click', function (e) {
+$("#json").on('click', _ => {
     $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
     $('#modalTitle').text('Creazione file json in corso...');
-    $flag=1;
-    let $name_list = [];
-    let $id_list = [];
-    $('input[name=name]').each(function(){
-        if($(this).parent().find('input:checkbox').is(":checked")) {
-            $name_list.push($(this).val());
-        }
-    });
-
-    $('input[name=peerID]').each(function(){
-        if($(this).parent().find('input:checkbox').is(":checked")) {
-            $id_list.push($(this).val());
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: serverUrl + "proxy/getMessages.php",
-            data: {id_list: $id_list, name_list:$name_list,flag:$flag},
-            timeout: 120000,
-            success: (result) => {
-                console.log(result);
-                window.location = 'message.php';
-            },
-            error: (e) => {
-                // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-                window.location = 'message.php';
-            }
-        });
-    });
+    sendChats('json');
 });
 
 $('.card').on('click', function (e) {
@@ -156,19 +61,35 @@ $('.card').on('click', function (e) {
     }
 });
 
-
-
-
-$(document).ready(function(){
+$(document).ready(function () {
     $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');
 
+    function imageLoaded() {
+        counter--;
+        if (counter === 0) {
+            $('#modalLoading').modal('hide');
+            $('#page_body').show();
+        }
+    }
+
+    let images = $('img');
+    let counter = images.length;
+
+    images.each(function () {
+        if (this.complete) {
+            imageLoaded.call(this);
+        } else {
+            $(this).one('load', imageLoaded);
+        }
+    });
+
     if ($(window).width() > 992) {
-        $(window).scroll(function(){
+        $(window).scroll(function () {
             if ($(this).scrollTop() > 5) {
                 $('#navbar_top').addClass("fixed-top");
                 // add padding top to show content behind navbar
                 $('body').css('padding-top', $('.navbar').outerHeight() + 'px');
-            }else{
+            } else {
                 $('#navbar_top').removeClass("fixed-top");
                 // remove padding top from body
                 $('body').css('padding-top', '0');
@@ -176,30 +97,63 @@ $(document).ready(function(){
         });
     }
 
-    $("#search").on("keyup", function() {
+    $("#search").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#myTable tr").filter(function() {
+        $("#chat_list tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
 });
 
-$(function() {
-    function imageLoaded() {
-        counter--;
-        if( counter === 0 ) {
+sendChats = (type = 'csv', chats = getCheckedChats()) => {
+    $.ajax({
+        type: "POST",
+        dataType: "JSON",
+        url: serverUrl + "proxy/getMessages.php",
+        data: {chats: chats, fileType: type},
+        timeout: 120000,
+        success: (result) => {
+            if(type == 'csv')
+                getCSVFromArray(result);
+            else
+                getJSONFromArray(result);
+            //window.location = 'message.php';
             $('#modalLoading').modal('hide');
-            $('#page_body').show();
-        }
-    }
-    let images = $('img');
-    let counter = images.length;
-
-    images.each(function() {
-        if( this.complete ) {
-            imageLoaded.call( this );
-        } else {
-            $(this).one('load', imageLoaded);
+            //RICHIESTA AJAX PER DOWNLOAD MEDIA ASINCRONO (?)
+        },
+        error: (e) => {
+            // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+            //window.location = 'message.php';
+            //MESSAGGIO DI ERRORE TEMPORIZZATO
         }
     });
-});
+}
+
+getCSVFromArray = (array) => {
+    let dataString, csvContent = "";
+    array.forEach((infoArray) => {
+        dataString = infoArray.join(",");
+        csvContent += dataString.replace(/\n/g, "\\n") + "\n";
+    });
+    let downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(new Blob(["\ufeff", csvContent]));
+    let date = new Date($.now());
+    downloadLink.download = date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".csv";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+getJSONFromArray = (array) => {}
+
+getCheckedChats = () => {
+    let chats = [];
+    $('input[name="user"]:checked').each(function () {
+        chats.push({
+            "id": $(this).parent().parent().find("input[type='hidden'][name='chatID']").val(),
+            "name": $(this).parent().parent().find("input[type='hidden'][name='chatName']").val()
+        });
+    });
+    return chats;
+}
+

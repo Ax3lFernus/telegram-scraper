@@ -33,3 +33,5 @@ fieldset
 {
   border-radius: 20px
 }
+.tableFixHead          { overflow-y: auto; height: 100%; }
+.tableFixHead thead th { position: sticky; top: 0; background: #f5f5f5; }

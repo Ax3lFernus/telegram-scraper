@@ -12,7 +12,7 @@ if (isset($_COOKIE['token']) && isset($_GET['peer_id'])) {
         header("Content-Type: image/jpeg");
         echo $picture;
     } else {
-        http_response_code(404);
+        http_response_code(500);
         die();
     }
 }
