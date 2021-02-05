@@ -111,7 +111,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         dataType: "JSON",
         url: serverUrl + "proxy/getMessages.php",
         data: {chats: chats, fileType: type},
-        timeout: 120000,
+        timeout: 0,
         success: (result) => {
             if(type == 'csv')
                 getCSVFromArray(result);
@@ -131,8 +131,8 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
 
 getCSVFromArray = (array) => {
     let dataString, csvContent = "";
-    array.forEach((infoArray) => {
-        dataString = infoArray.join(",");
+    array.forEach((element) => {
+        dataString = element.join(",");
         csvContent += dataString.replace(/\n/g, "\\n") + "\n";
     });
     let downloadLink = document.createElement("a");
@@ -144,7 +144,21 @@ getCSVFromArray = (array) => {
     document.body.removeChild(downloadLink);
 }
 
-getJSONFromArray = (array) => {}
+getJSONFromArray = (array) => {
+    let jsonObj = [];
+    array.shift();
+    array.forEach((element) => {
+        jsonObj.push({"chat_id": element[0], "chat_name": element[1], "out": element[2], "date": element[3], "message": element[4].replace(/\n/g, "\\n"), "media_name": element[5]});
+    });
+    let json = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonObj));
+    let downloadLink = document.createElement('a');
+    let date = new Date($.now());
+    downloadLink.setAttribute("href", json);
+    downloadLink.setAttribute("download", date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".json");
+    document.body.appendChild(downloadLink); // required for firefox
+    downloadLink.click();
+    downloadLink.remove();
+}
 
 getCheckedChats = () => {
     let chats = [];
