@@ -82,9 +82,9 @@ $("input[type=checkbox]").click(() => {
 });
 
 $("#csv").on('click', function (e) {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file csv in corso...');
-    $flag=0;
+   // $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+    //$('#modalTitle').text('Creazione file csv in corso...');
+    let $flag=0;
     let $name_list = [];
     let $id_list = [];
     $('input[name=name]').each(function(){
