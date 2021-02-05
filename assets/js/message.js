@@ -23,21 +23,22 @@ $("#logout").on('click', _ => {
         }
     });
 });
-
+/*
 $("#csv").on('click', _ => {
     $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
     $('#modalTitle').text('Creazione file csv in corso...');
     $.ajax({
         type: "GET",
         dataType: "JSON",
-        url: serverUrl + "proxy/csv.php",
+        url: serverUrl + "proxy/getMessages.php",
         timeout: 120000,
         success: (result) => {
             console.log(result);
             window.location = 'message.php';
         },
         error: (e) => {
-            $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+           // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+            window.location = 'message.php';
         }
     });
 });
@@ -55,11 +56,12 @@ $("#json").on('click', _ => {
             window.location = 'message.php';
         },
         error: (e) => {
-            $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+           // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+            window.location = 'message.php';
         }
     });
 });
-
+*/
 $("#csv,#json").click(function(){
     if($("#dataInizio").val() > $("#dataFine").val())
     {
@@ -79,12 +81,83 @@ $("input[type=checkbox]").click(() => {
         $("#check_all_chats").prop('checked', false);
 });
 
+$("#csv").on('click', function (e) {
+    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+    $('#modalTitle').text('Creazione file csv in corso...');
+    $flag=0;
+    let $name_list = [];
+    let $id_list = [];
+    $('input[name=name]').each(function(){
+        if($(this).parent().find('input:checkbox').is(":checked")) {
+            $name_list.push($(this).val());
+        }
+        });
+
+    $('input[name=peerID]').each(function(){
+        if($(this).parent().find('input:checkbox').is(":checked")) {
+            $id_list.push($(this).val());
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: serverUrl + "proxy/getMessages.php",
+            data: {id_list: $id_list, name_list:$name_list, flag:$flag},
+            timeout: 120000,
+            success: (result) => {
+                console.log(result);
+                window.location = 'message.php';
+            },
+                error: (e) => {
+                    // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+                    window.location = 'message.php';
+                }
+        });
+    });
+});
+
+$("#json").on('click', function (e) {
+    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+    $('#modalTitle').text('Creazione file json in corso...');
+    $flag=1;
+    let $name_list = [];
+    let $id_list = [];
+    $('input[name=name]').each(function(){
+        if($(this).parent().find('input:checkbox').is(":checked")) {
+            $name_list.push($(this).val());
+        }
+    });
+
+    $('input[name=peerID]').each(function(){
+        if($(this).parent().find('input:checkbox').is(":checked")) {
+            $id_list.push($(this).val());
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: serverUrl + "proxy/getMessages.php",
+            data: {id_list: $id_list, name_list:$name_list,flag:$flag},
+            timeout: 120000,
+            success: (result) => {
+                console.log(result);
+                window.location = 'message.php';
+            },
+            error: (e) => {
+                // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
+                window.location = 'message.php';
+            }
+        });
+    });
+});
+
 $('.card').on('click', function (e) {
     if (!$(e.target).is('input:checkbox')) {
         let $checkbox = $(this).find('input:checkbox');
         $checkbox.prop('checked', !$checkbox.prop('checked'));
     }
 });
+
+
+
 
 $(document).ready(function(){
     $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');

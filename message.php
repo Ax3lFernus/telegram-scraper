@@ -31,7 +31,7 @@ require 'layouts/head.php';
         </div>
         <?php
         echo '<div class="row mt-3" style="height: 300px;overflow: auto;"><div class="col"></div>';
- echo '<div class="col-7"><table class="table table-striped ">
+ echo '<div class="col-7"><table class="table table-striped">
   <thead>
   <tr>
     <th scope="col">Immagine profilo</th>
@@ -40,12 +40,13 @@ require 'layouts/head.php';
   </tr>
   </thead>
   <tbody id="myTable">';
-        for ($i = 0; $i < count($chat_list);$i++) {
+        for ($i = 0; $i < count($chat_list);$i++){
     echo' <tr>
     <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
     <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
     <td><input type="checkbox" name="user"></td>
-  </tr><input type="hidden" value=' . $chat_list[$i]['peerID'] .' name="peerID"><input type="hidden" value='. $chat_list[$i]['name'] . ' name="name">';
+    <input type="hidden" value=' . $chat_list[$i]['peerID'] .' id="peerID" name="peerID"><input type="hidden" value='. $chat_list[$i]['name'] . ' id="name" name="name">
+  </tr>';
  }
         echo '</tbody>
 </table></div>';
