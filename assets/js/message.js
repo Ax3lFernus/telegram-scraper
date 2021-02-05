@@ -43,8 +43,8 @@ $("input[type=checkbox]").click(() => {
 });
 
 $("#csv").on('click', _ => {
-    //$('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    //$('#modalTitle').text('Creazione file json in corso...');
+    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+    $('#modalTitle').text('Creazione file csv in corso...');
     sendChats('csv');
 });
 
@@ -131,9 +131,11 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
 
 getCSVFromArray = (array) => {
     let dataString, csvContent = "";
+    csvContent = array[0] + "\n";
+    array.shift();
     array.forEach((element) => {
-        dataString = element.join(",");
-        csvContent += dataString.replace(/\n/g, "\\n") + "\n";
+        dataString = element.slice(0, 4).join(",") + ',"' + element[4].replace(/\n/g, "\\n") + '",' + element[5] + "\n";
+        csvContent += dataString;
     });
     let downloadLink = document.createElement("a");
     downloadLink.href = URL.createObjectURL(new Blob(["\ufeff", csvContent]));
