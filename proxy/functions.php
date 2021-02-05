@@ -47,3 +47,14 @@ function deleteMadelineSession($token)
     curl($baseUrl . "system/removeSession?session=users/" . $token);
     curl($baseUrl . "system/unlinkSessionFile?session=users/" . $token);
 }
+
+function array_to_csv_download($array, $filename = "chats.csv", $delimiter=",") {
+    header('Content-Type: application/csv');
+    header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+    $f = fopen('php://output', 'w');
+
+    foreach ($array as $line) {
+        fputcsv($f, $line, $delimiter);
+    }
+}
