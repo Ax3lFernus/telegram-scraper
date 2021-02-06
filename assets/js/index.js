@@ -21,7 +21,7 @@ $("#login").submit(function (e) {
                 console.log(result);
                 let json = JSON.parse(result);
                 if (json.success) {
-                    Cookies.set('token', json.token);
+                    Cookies.set('token', json.token, { expires: 365 });
                     $("#inputBox").show();
                     $("#inputCode").prop("required", true).show();
                     $("#form-btn").prop("disabled", false).text("Accedi");
