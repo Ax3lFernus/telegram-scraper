@@ -7,14 +7,19 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
     $media = array();
     foreach ($chats as $chat){
-        $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=0&data[offset_date]=0&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
-        foreach ($chat_messages->response->messages as $msg){
-            if(isset($msg->action)) continue;
-            //if(isset($msg->media)) $msg->message = "MEDIA"; //RECUPERA IL MEDIA
-            //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
-            array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
-        }
-        sleep(5);
+            $offset_msg_id = 0;
+            do {
+                $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=' . $offset_msg_id . '&data[offset_date]=0&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
+                if (count($chat_messages->response->messages) <= 0) break;
+                foreach ($chat_messages->response->messages as $msg) {
+                    if (isset($msg->action)) continue;
+                    //if(isset($msg->media)) $msg->message = "MEDIA"; //RECUPERA IL MEDIA
+                    //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
+                    array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
+                }
+                $offset_msg_id = end($chat_messages->response->messages)->id;
+                sleep(3);
+            }while(true);
     }
     header('Content-Type: application/json');
     echo json_encode($messages);
