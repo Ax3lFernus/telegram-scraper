@@ -13,7 +13,8 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
                 if (count($chat_messages->response->messages) <= 0) break;
                 foreach ($chat_messages->response->messages as $msg) {
                     if (isset($msg->action)) continue;
-                    //if(isset($msg->media)) $msg->message = "MEDIA"; //RECUPERA IL MEDIA
+                    if(isset($msg->media))
+                        array_push($media, [$chat['id'], $msg->id, uniqid(rand(), true)]);
                     //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
                     array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
                 }
