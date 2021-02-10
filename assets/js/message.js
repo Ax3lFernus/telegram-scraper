@@ -114,12 +114,16 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         timeout: 0,
         success: (result) => {
             if(type == 'csv')
-                getCSVFromArray(result);
+                getCSVFromArray(result[0]);
             else
-                getJSONFromArray(result);
-            //window.location = 'message.php';
-            $('#modalLoading').modal('hide');
-            //RICHIESTA AJAX PER DOWNLOAD MEDIA ASINCRONO (?)
+                getJSONFromArray(result[0]);
+
+            if($('input[name="Media"]:checked').val() === '1') {
+                $('#modalTitle').text('Creazione della cartella contenente i media...');
+                $('#modalStripe').addClass('bg-warning');
+                setTimeout(checkZipAvailability.bind(null, result[1]),1000);
+            }else
+                $('#modalLoading').modal('hide');
         },
         error: (e) => {
             // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
@@ -173,3 +177,18 @@ getCheckedChats = () => {
     return chats;
 }
 
+checkZipAvailability = (zipName) => {
+    $.ajax({
+        url: './tmp/' + zipName,
+        type: 'get',
+        timeout: 1000,
+        success: () => {
+            $("#modalLoading").modal('hide');
+            $('#modalStripe').removeClass('bg-warning');
+            window.open('./tmp/' + zipName, '_blank');
+        },
+        error: () => {
+            setTimeout(checkZipAvailability.bind(null, zipName),5000);
+        }
+    });
+}

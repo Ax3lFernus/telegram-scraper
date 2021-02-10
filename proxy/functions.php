@@ -66,7 +66,7 @@ function zipFolder($path, $zipName){
     $rootPath = realpath($path);
 
     $zip = new ZipArchive();
-    $zip->open(dirname($path, 1) . '\\' . $zipName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+    $zip->open(dirname($path, 1) . '\\' . $zipName . '.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
     $files = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($rootPath),

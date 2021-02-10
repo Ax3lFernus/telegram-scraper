@@ -7,6 +7,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $chats = $_POST['chats'];
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
     $getMedia = $_POST['media'] == 0 ? false : true;
+    $zipName = 'null';
     if($getMedia) {
         $media = array();
         $media_id = 0;
@@ -29,7 +30,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                 sleep(3);
             }while(true);
     }
-    echo json_encode($messages);
+    echo json_encode(array($messages, $zipName . '.zip'));
     $size = ob_get_length();
     header('Content-Type: application/json');
     header("Content-Encoding: none");
