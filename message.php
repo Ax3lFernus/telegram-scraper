@@ -76,8 +76,8 @@ require 'layouts/head.php';
         </div>
         <div class="row mt-3">
             <div class="col-sm-5" style="text-align: right">Includere i media:</div>
-            <div class="col-sm-1"><input type="radio" name="Media"> Si</div>
-            <div class="col-sm-1"><input type="radio" checked name="Media"> No</div>
+            <div class="col-sm-1"><input type="radio" name="Media" value="1"> Si</div>
+            <div class="col-sm-1"><input type="radio" name="Media" value="0" checked> No</div>
             <div class="col-sm-5"></div>
         </div>
     </fieldset>

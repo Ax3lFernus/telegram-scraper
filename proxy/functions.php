@@ -1,9 +1,12 @@
 <?php
+
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1), '.env');
 $dotenv->load();
 $dotenv->required('TELEGRAM_API_SERVER_BASE_URL')->notEmpty();
+
+$mimes = new Mimey\MimeTypes;
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
 
@@ -41,20 +44,54 @@ function curlPOST($url, $body)
     return $output;
 }
 
+function downloadFileToDir($url, $fileDir){
+    global $mimes;
+    $fp = fopen($fileDir, 'w');
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FILE, $fp);
+    $data = curl_exec($ch);
+    $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+    curl_close($ch);
+    if(fwrite($fp, $data)){
+        fclose($fp);
+        $ext = $mimes->getExtension($contentType) == '' ? '' : '.' . $mimes->getExtension($contentType);
+        if($ext != '') rename($fileDir, $fileDir . $ext);
+        return true;
+    }
+    return false;
+}
+
+function zipFolder($path){
+    $rootPath = realpath($path);
+    $zipName = generateRandomString() . '.zip';
+
+    $zip = new ZipArchive();
+    $zip->open(dirname($path, 1) . '\\' . $zipName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+    $files = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($rootPath),
+        RecursiveIteratorIterator::LEAVES_ONLY
+    );
+
+    foreach ($files as $name => $file)
+    {
+        if (!$file->isDir())
+        {
+            $filePath = $file->getRealPath();
+            $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+            $zip->addFile($filePath, $relativePath);
+        }
+    }
+
+    $zip->close();
+    return $zipName;
+}
+
 function deleteMadelineSession($token)
 {
     global $baseUrl;
     curl($baseUrl . "system/removeSession?session=users/" . $token);
     curl($baseUrl . "system/unlinkSessionFile?session=users/" . $token);
-}
-
-function array_to_csv_download($array, $filename = "chats.csv", $delimiter=",") {
-    header('Content-Type: application/csv');
-    header('Content-Disposition: attachment; filename="'.$filename.'";');
-
-    $f = fopen('php://output', 'w');
-
-    foreach ($array as $line) {
-        fputcsv($f, $line, $delimiter);
-    }
 }

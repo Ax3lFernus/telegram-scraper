@@ -110,7 +110,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         type: "POST",
         dataType: "JSON",
         url: serverUrl + "proxy/getMessages.php",
-        data: {chats: chats, fileType: type},
+        data: {chats: chats, media: $('input[name="Media"]:checked').val()},
         timeout: 0,
         success: (result) => {
             if(type == 'csv')

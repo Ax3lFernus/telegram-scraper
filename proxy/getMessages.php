@@ -1,11 +1,13 @@
 <?php
 require __DIR__ . '/functions.php';
 
-if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
+if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])) {
     $token = $_COOKIE['token'];
     $chats = $_POST['chats'];
+    $getMedia = $_POST['media'] == 0 ? false : true;
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
     $media = array();
+    $media_id = 0;
     foreach ($chats as $chat){
             $offset_msg_id = 0;
             do {
@@ -13,8 +15,9 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
                 if (count($chat_messages->response->messages) <= 0) break;
                 foreach ($chat_messages->response->messages as $msg) {
                     if (isset($msg->action)) continue;
-                    if(isset($msg->media))
-                        array_push($media, [$chat['id'], $msg->id, uniqid(rand(), true)]);
+                    if(isset($msg->media) && $getMedia) {
+                        array_push($media, [$chat['id'], $msg->id, ++$media_id]);
+                    }
                     //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
                     array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
                 }
@@ -24,6 +27,11 @@ if (isset($_COOKIE['token']) && isset($_POST['chats'])) {
     }
     header('Content-Type: application/json');
     echo json_encode($messages);
+    if($getMedia){
+        ob_end_flush();
+        flush();
+        require  __DIR__ . '/downloadMedia.php';
+    }
 }else{
     http_response_code(500);
     die();
