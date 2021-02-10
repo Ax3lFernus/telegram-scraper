@@ -62,9 +62,8 @@ function downloadFileToDir($url, $fileDir){
     return false;
 }
 
-function zipFolder($path){
+function zipFolder($path, $zipName){
     $rootPath = realpath($path);
-    $zipName = generateRandomString() . '.zip';
 
     $zip = new ZipArchive();
     $zip->open(dirname($path, 1) . '\\' . $zipName, ZipArchive::CREATE | ZipArchive::OVERWRITE);

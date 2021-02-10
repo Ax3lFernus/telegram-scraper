@@ -1,13 +1,17 @@
 <?php
+ob_start();
 require __DIR__ . '/functions.php';
 
 if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])) {
     $token = $_COOKIE['token'];
     $chats = $_POST['chats'];
-    $getMedia = $_POST['media'] == 0 ? false : true;
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
-    $media = array();
-    $media_id = 0;
+    $getMedia = $_POST['media'] == 0 ? false : true;
+    if($getMedia) {
+        $media = array();
+        $media_id = 0;
+        $zipName = generateRandomString(15);
+    }
     foreach ($chats as $chat){
             $offset_msg_id = 0;
             do {
@@ -25,11 +29,16 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                 sleep(3);
             }while(true);
     }
-    header('Content-Type: application/json');
     echo json_encode($messages);
+    $size = ob_get_length();
+    header('Content-Type: application/json');
+    header("Content-Encoding: none");
+    header("Content-Length: {$size}");
+    header("Connection: close");
+    ob_end_flush();
+    ob_flush();
+    flush();
     if($getMedia){
-        ob_end_flush();
-        flush();
         require  __DIR__ . '/downloadMedia.php';
     }
 }else{
