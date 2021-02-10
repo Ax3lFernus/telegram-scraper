@@ -8,9 +8,9 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $messages = array(array('chat_id','chat_name','out', 'date', 'message', 'media_name'));
     $getMedia = $_POST['media'] == 0 ? false : true;
     $zipName = 'null';
+    $media_id = 0;
     if($getMedia) {
         $media = array();
-        $media_id = 0;
         $zipName = generateRandomString(15);
     }
     foreach ($chats as $chat){
@@ -24,7 +24,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                         array_push($media, [$chat['id'], $msg->id, ++$media_id]);
                     }
                     //PRENDERE ID DELL'UTENTE CHE MANDA IL MESSAGGIO NELLA CHAT DI GRUPPO QUANDO OUT:false
-                    array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, isset($msg->media) ? 'YES' : 'NO']);
+                    array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
                 }
                 $offset_msg_id = end($chat_messages->response->messages)->id;
                 sleep(3);
