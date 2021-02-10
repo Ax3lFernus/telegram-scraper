@@ -46,7 +46,7 @@ require 'layouts/head.php';
                                 <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
                                 <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
                                 <td><input type="checkbox" name="user"></td>
-                                <input type="hidden" value=' . $chat_list[$i]['peerID'] . ' name="chatID"><input type="hidden" value=' . $chat_list[$i]['name'] . ' name="chatName">
+                                <input type="hidden" value="' . $chat_list[$i]['peerID'] . '" name="chatID"><input type="hidden" value="' . htmlspecialchars($chat_list[$i]['name']) . '" name="chatName"><input type="hidden" value="' . $chat_list[$i]['peerType'] . '" name="chatType">
                               </tr>';
                     }
                     ?>

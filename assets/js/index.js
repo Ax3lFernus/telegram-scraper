@@ -1,8 +1,8 @@
 /*
 * Telegram Scraper v1.0.0
-* Content: index.php scripts
+* Content: message.php scripts
 * Author: Alessandro Annese & Davide De Salvo
-* Last update: 02/02/2021
+* Last update: 11/02/2021
 */
 $("#login").submit(function (e) {
     e.preventDefault();

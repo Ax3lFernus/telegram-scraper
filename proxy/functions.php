@@ -44,7 +44,8 @@ function curlPOST($url, $body)
     return $output;
 }
 
-function downloadFileToDir($url, $fileDir){
+function downloadFileToDir($url, $fileDir)
+{
     global $mimes;
     $fp = fopen($fileDir, 'w');
     $ch = curl_init();
@@ -53,16 +54,17 @@ function downloadFileToDir($url, $fileDir){
     $data = curl_exec($ch);
     $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
     curl_close($ch);
-    if(fwrite($fp, $data)){
+    if (fwrite($fp, $data)) {
         fclose($fp);
         $ext = $mimes->getExtension($contentType) == '' ? '' : '.' . $mimes->getExtension($contentType);
-        if($ext != '') rename($fileDir, $fileDir . $ext);
+        if ($ext != '') rename($fileDir, $fileDir . $ext);
         return true;
     }
     return false;
 }
 
-function zipFolder($path, $zipName){
+function zipFolder($path, $zipName)
+{
     $rootPath = realpath($path);
 
     $zip = new ZipArchive();
@@ -73,10 +75,8 @@ function zipFolder($path, $zipName){
         RecursiveIteratorIterator::LEAVES_ONLY
     );
 
-    foreach ($files as $name => $file)
-    {
-        if (!$file->isDir())
-        {
+    foreach ($files as $name => $file) {
+        if (!$file->isDir()) {
             $filePath = $file->getRealPath();
             $relativePath = substr($filePath, strlen($rootPath) + 1);
 
@@ -86,6 +86,35 @@ function zipFolder($path, $zipName){
 
     $zip->close();
     return $zipName;
+}
+
+function getPeerInfo($id)
+{
+    global $baseUrl, $token;
+    $info = curl($baseUrl . 'api/users/' . $token . '/getInfo?peer=' . $id);
+    if (key($info->response) == 'Chat') {
+        $type = $info->response->Chat->_;
+        //Chat di gruppo/Canali
+        if (isset($info->response->Chat->title))
+            $name = $info->response->Chat->title;
+        else
+            return null;
+    } else {
+        $type = $info->response->User->bot ? "bot" : "user";
+        //Utente/Bot
+        if (isset($info->response->User->first_name)) {
+            $name = $info->response->User->first_name;
+        } elseif (isset($info->response->User->username)) {
+            $name = "@" . $info->response->User->username;
+        } else {
+            return null;
+        }
+        if (isset($info->response->User->last_name)) {
+            $name .= " " . $info->response->User->last_name;
+        }
+    }
+    $out = ['name' => $name, 'type' => $type];
+    return $out;
 }
 
 function deleteMadelineSession($token)

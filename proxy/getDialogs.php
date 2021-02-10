@@ -5,27 +5,9 @@ if (isset($_COOKIE['token'])) {
     $chat_list = array();
     if ($chats->success) {
         foreach ($chats->response as $id => $chat) {
-            $info = curl($baseUrl . 'api/users/' . $token . '/getInfo?peer=' . $id);
-            if (key($info->response) == 'Chat') {
-                //Chat di gruppo/Canali
-                if (isset($info->response->Chat->title))
-                    $name = $info->response->Chat->title;
-                else
-                    continue;
-            } else {
-                //Utente/Bot
-                if (isset($info->response->User->first_name)) {
-                    $name = $info->response->User->first_name;
-                } elseif (isset($info->response->User->username)) {
-                    $name = "@" . $info->response->User->username;
-                } else {
-                    continue;
-                }
-                if (isset($info->response->User->last_name)) {
-                    $name .= " " . $info->response->User->last_name;
-                }
-            }
-            array_push($chat_list, ['name' => $name, 'peerID' => $id]);
+            $info = getPeerInfo($id);
+            if ($info == null) continue;
+            array_push($chat_list, ['name' => $info['name'], 'peerID' => $id, 'peerType' => $info['type']]);
         }
         $chat_list = array_reverse($chat_list);
     }

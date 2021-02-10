@@ -2,7 +2,7 @@
 * Telegram Scraper v1.0.0
 * Content: message.php scripts
 * Author: Alessandro Annese & Davide De Salvo
-* Last update: 02/02/2021
+* Last update: 11/02/2021
 */
 $("#logout").on('click', _ => {
     $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');
@@ -113,16 +113,17 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         data: {chats: chats, media: $('input[name="Media"]:checked').val()},
         timeout: 0,
         success: (result) => {
-            if(type == 'csv')
+            if (type == 'csv')
                 getCSVFromArray(result[0]);
             else
                 getJSONFromArray(result[0]);
 
-            if($('input[name="Media"]:checked').val() === '1') {
+            if ($('input[name="Media"]:checked').val() === '1') {
                 $('#modalTitle').text('Creazione della cartella contenente i media...');
-                $('#modalStripe').addClass('bg-warning');
-                setTimeout(checkZipAvailability.bind(null, result[1]),1000);
-            }else
+                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).style('width', '0%');
+                setTimeout(checkZipAvailability.bind(null, result[1]), 1000);
+                setTimeout(checkMediaDownloadStatus.bind(null, result[2]), 1000);
+            } else
                 $('#modalLoading').modal('hide');
         },
         error: (e) => {
@@ -138,13 +139,13 @@ getCSVFromArray = (array) => {
     csvContent = array[0] + "\n";
     array.shift();
     array.forEach((element) => {
-        dataString = element.slice(0, 4).join(",") + ',"' + element[4].replace(/\n/g, "\\n") + '",' + element[5] + "\n";
+        dataString = element[0] + ',"' + element.slice(1, 4).join('","') + '","' + element[4].replace(/\n/g, '","') + '",' + element[5] + "\n";
         csvContent += dataString;
     });
     let downloadLink = document.createElement("a");
     let date = new Date($.now());
     downloadLink.setAttribute("href", URL.createObjectURL(new Blob(["\ufeff", csvContent])));
-    downloadLink.setAttribute("download", date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".csv");
+    downloadLink.setAttribute("download", date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + ".csv");
     document.body.appendChild(downloadLink);
     downloadLink.click();
     downloadLink.remove();
@@ -154,13 +155,20 @@ getJSONFromArray = (array) => {
     let jsonObj = [];
     array.shift();
     array.forEach((element) => {
-        jsonObj.push({"chat_id": element[0], "chat_name": element[1], "out": element[2], "date": element[3], "message": element[4].replace(/\n/g, "\\n"), "media_name": element[5]});
+        jsonObj.push({
+            "chat_id": element[0],
+            "chat_name": element[1],
+            "author": element[2],
+            "date": element[3],
+            "message": element[4].replace(/\n/g, "\\n"),
+            "media_name": element[5]
+        });
     });
     let json = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonObj));
     let downloadLink = document.createElement('a');
     let date = new Date($.now());
     downloadLink.setAttribute("href", json);
-    downloadLink.setAttribute("download", date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+".json");
+    downloadLink.setAttribute("download", date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + ".json");
     document.body.appendChild(downloadLink); // required for firefox
     downloadLink.click();
     downloadLink.remove();
@@ -171,7 +179,8 @@ getCheckedChats = () => {
     $('input[name="user"]:checked').each(function () {
         chats.push({
             "id": $(this).parent().parent().find("input[type='hidden'][name='chatID']").val(),
-            "name": $(this).parent().parent().find("input[type='hidden'][name='chatName']").val()
+            "name": $(this).parent().parent().find("input[type='hidden'][name='chatName']").val(),
+            "type": $(this).parent().parent().find("input[type='hidden'][name='chatType']").val()
         });
     });
     return chats;
@@ -181,14 +190,38 @@ checkZipAvailability = (zipName) => {
     $.ajax({
         url: './tmp/' + zipName,
         type: 'get',
-        timeout: 1000,
+        timeout: 2000,
         success: () => {
             $("#modalLoading").modal('hide');
             $('#modalStripe').removeClass('bg-warning');
             window.open('./tmp/' + zipName, '_blank');
         },
-        error: () => {
-            setTimeout(checkZipAvailability.bind(null, zipName),5000);
+        error: function (code, textStatus, errorThrown) {
+            if (code != 200) {
+                setTimeout(checkZipAvailability.bind(null, zipName), 5000);
+            } else {
+                $("#modalLoading").modal('hide');
+                $('#modalStripe').removeClass('bg-warning');
+                window.open('./tmp/' + zipName, '_blank');
+            }
+        }
+    });
+}
+
+checkMediaDownloadStatus = (num_media) => {
+    $.ajax({
+        url: './proxy/downloadMediaStatus.php',
+        type: 'get',
+        data: {'num_media': num_media},
+        success: (result) => {
+            let percentage = parseFloat(result.data);
+            if (percentage < 99){
+                setTimeout(checkMediaDownloadStatus.bind(null, num_media), 5000);
+                $('#modalStripe').attr('aria-valuenow', percentage).style('width', percentage+'%');;
+            }
+        },
+        error: function (code, textStatus, errorThrown) {
+            setTimeout(checkZipAvailability.bind(null, num_media), 5000);
         }
     });
 }
