@@ -27,7 +27,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                     array_push($messages, [$chat['id'], $chat['name'], $msg->out, date("Y-m-d H:i:s", $msg->date), $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
                 }
                 $offset_msg_id = end($chat_messages->response->messages)->id;
-                sleep(3);
+                sleep(2);
             }while(true);
     }
     echo json_encode(array($messages, $zipName . '.zip'));
