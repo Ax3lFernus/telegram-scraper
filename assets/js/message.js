@@ -106,6 +106,7 @@ $(document).ready(function () {
 });
 
 sendChats = (type = 'csv', chats = getCheckedChats()) => {
+    $('#modalStripe').attr('aria-valuenow', 100).width('100%');
     $.ajax({
         type: "POST",
         dataType: "JSON",
@@ -121,8 +122,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
             if ($('input[name="Media"]:checked').val() === '1') {
                 $('#modalTitle').text('Creazione della cartella contenente i media...');
                 $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                setTimeout(checkZipAvailability.bind(null, result[1]), 1000);
-                setTimeout(checkMediaDownloadStatus.bind(null, result[2]), 1000);
+                setTimeout(checkMediaDownloadStatus.bind(null, result[2], result[1]), 1000);
             } else
                 $('#modalLoading').modal('hide');
         },
@@ -186,42 +186,28 @@ getCheckedChats = () => {
     return chats;
 }
 
-checkZipAvailability = (zipName) => {
-    $.ajax({
-        url: './tmp/' + zipName,
-        type: 'get',
-        timeout: 2000,
-        success: () => {
-            $("#modalLoading").modal('hide');
-            $('#modalStripe').removeClass('bg-warning');
-            window.open('./tmp/' + zipName, '_blank');
-        },
-        error: function (code, textStatus, errorThrown) {
-            if (code != 200) {
-                setTimeout(checkZipAvailability.bind(null, zipName), 5000);
-            } else {
-                $("#modalLoading").modal('hide');
-                $('#modalStripe').removeClass('bg-warning');
-                window.open('./tmp/' + zipName, '_blank');
-            }
-        }
-    });
-}
-
-checkMediaDownloadStatus = (num_media) => {
+checkMediaDownloadStatus = (media_num, zipName) => {
     $.ajax({
         url: './proxy/downloadMediaStatus.php',
         type: 'get',
-        data: {'num_media': num_media},
+        timeout: 2000,
+        data: {'media_num': media_num, 'zip_name': zipName},
         success: (result) => {
-            let percentage = parseFloat(result.data);
+            let percentage = parseFloat(result.percentage);
+            let status = result.status;
             if (percentage < 99) {
-                setTimeout(checkMediaDownloadStatus.bind(null, num_media), 5000);
                 $('#modalStripe').attr('aria-valuenow', percentage).width(percentage + '%');
+            }
+            if (status) {
+                $("#modalLoading").modal('hide');
+                $('#modalStripe').removeClass('bg-warning');
+                window.location.href = './tmp/' + zipName;
+            } else {
+                setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
             }
         },
         error: function (code, textStatus, errorThrown) {
-            setTimeout(checkZipAvailability.bind(null, num_media), 5000);
+            setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
         }
     });
 }
