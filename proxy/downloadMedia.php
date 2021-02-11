@@ -1,5 +1,5 @@
 <?php
-$tmpDir = dirname(__DIR__, 1) . '\\tmp\\' . $token;
+$tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
 
 if (file_exists($tmpDir)) {
     array_map('unlink', array_filter((array)glob($tmpDir . "/*")));

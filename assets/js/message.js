@@ -120,7 +120,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
 
             if ($('input[name="Media"]:checked').val() === '1') {
                 $('#modalTitle').text('Creazione della cartella contenente i media...');
-                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).style('width', '0%');
+                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
                 setTimeout(checkZipAvailability.bind(null, result[1]), 1000);
                 setTimeout(checkMediaDownloadStatus.bind(null, result[2]), 1000);
             } else
@@ -215,9 +215,9 @@ checkMediaDownloadStatus = (num_media) => {
         data: {'num_media': num_media},
         success: (result) => {
             let percentage = parseFloat(result.data);
-            if (percentage < 99){
+            if (percentage < 99) {
                 setTimeout(checkMediaDownloadStatus.bind(null, num_media), 5000);
-                $('#modalStripe').attr('aria-valuenow', percentage).style('width', percentage+'%');;
+                $('#modalStripe').attr('aria-valuenow', percentage).width(percentage + '%');
             }
         },
         error: function (code, textStatus, errorThrown) {
