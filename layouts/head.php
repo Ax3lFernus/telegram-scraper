@@ -8,7 +8,7 @@
     <meta property="og:title" content="Telegram Scraper">
     <meta property="og:site_name" content="Telegram Scraper">
     <meta property="og:url" content="<?php $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-                "https" : "http") . "://" . $_SERVER['HTTP_HOST']; echo $link;?>">
+                "https" : "http") . "://" . $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']); echo $link;?>">
     <meta property="og:description" content="Un semplice scraper di telegram completamente online! Scarica le tue chat in maniera facile e veloce!">
     <meta property="og:type" content="website">
     <meta property="og:image" content="<?php echo $link . '/assets/images/og-image.jpg'; ?>">
