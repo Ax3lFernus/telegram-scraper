@@ -5,9 +5,9 @@ require __DIR__ . '/functions.php';
 if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])) {
     $token = $_COOKIE['token'];
     $chats = $_POST['chats'];
-    $dataInizio=$_POST['dataInizio'];
-    $dataFine=$_POST['dataFine'];
-    $dataFine=date("Y-m-d",strtotime("$dataFine +1 day"));
+    $dataInizio = $_POST['dataInizio'];
+    $dataFine = $_POST['dataFine'];
+    $dataFine = date("Y-m-d", strtotime("$dataFine +1 day"));
     $messages = array(array('chat_id', 'chat_name', 'author', 'date', 'message', 'media_name'));
     $users_info = array();
     $getMedia = $_POST['media'] == 0 ? false : true;
@@ -23,23 +23,25 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=' . $offset_msg_id . '&data[offset_date]=' . strtotime($dataFine) . '&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
             if (count($chat_messages->response->messages) <= 0) break;
             foreach ($chat_messages->response->messages as $msg) {
-                if (isset($msg->action)) continue;
-                if (isset($msg->media) && $getMedia) {
-                    array_push($media, [$chat['id'], $msg->id, ++$media_id]);
-                }
-                if ($msg->out) {
-                    $author = "Me";
-                } elseif ($chat['type'] == "chat") {
-                    if (!isset($users_info[$msg->from_id->user_id])) {
-                        $info = getPeerInfo($msg->from_id->user_id);
-                        $users_info[$msg->from_id->user_id] = ($info == null) ? 'no_name' : $info['name'];
-                        sleep(1);
+                if (date("Y-m-d", $msg->date) >= $dataInizio) {
+                    if (isset($msg->action)) continue;
+                    if (isset($msg->media) && $getMedia) {
+                        array_push($media, [$chat['id'], $msg->id, ++$media_id]);
                     }
-                    $author = $users_info[$msg->from_id->user_id];
-                } else {
-                    $author = $chat['name'];
+                    if ($msg->out) {
+                        $author = "Me";
+                    } elseif ($chat['type'] == "chat") {
+                        if (!isset($users_info[$msg->from_id->user_id])) {
+                            $info = getPeerInfo($msg->from_id->user_id);
+                            $users_info[$msg->from_id->user_id] = ($info == null) ? 'no_name' : $info['name'];
+                            sleep(1);
+                        }
+                        $author = $users_info[$msg->from_id->user_id];
+                    } else {
+                        $author = $chat['name'];
+                    }
+                    array_push($messages, [$chat['id'], $chat['name'], $author, date("Y-m-d H:i:s", $msg->date), $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
                 }
-                array_push($messages, [$chat['id'], $chat['name'], $author, date("Y-m-d H:i:s", $msg->date), $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
             }
             $offset_msg_id = end($chat_messages->response->messages)->id;
             sleep(2);
@@ -56,7 +58,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     flush();
     if ($getMedia && count($media) > 0) {
         require __DIR__ . '/downloadMedia.php';
-    }else die();
+    } else die();
 } else {
     http_response_code(500);
     die();
