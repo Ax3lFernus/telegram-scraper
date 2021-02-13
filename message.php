@@ -82,6 +82,10 @@ require 'layouts/head.php';
         </div>
     </fieldset>
     <div class="row mt-3">
+        <div class="alert alert-danger " id="alertError" style="display:none;margin-top: 5px;" role="alert"> <!--alert-dismissible fade show!-->
+            <strong>Errore!</strong> Seleziona almeno una chat.
+            <!--<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>!-->
+        </div>
         <div class="col-sm-4"></div>
         <div class="col-sm-2">
             <button id="csv" class="btn btn-success" type="button">Download csv</button>

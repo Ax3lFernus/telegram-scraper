@@ -24,12 +24,6 @@ $("#logout").on('click', _ => {
     });
 });
 
-$("#csv,#json").click(function () {
-    if ($("#dataInizio").val() > $("#dataFine").val()) {
-        $("#dataFine,#dataInizio").toggleClass("is-invalid");
-    }
-
-});
 
 $("#check_all_chats").click(function () {
     $("input[type=checkbox]").not(this).prop('checked', $(this).prop('checked'));
@@ -43,15 +37,25 @@ $("input[type=checkbox]").click(() => {
 });
 
 $("#csv").on('click', _ => {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file csv in corso...');
-    sendChats('csv');
+    if ($("#dataInizio").val() <= $("#dataFine").val()) {
+        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+        $('#modalTitle').text('Creazione file csv in corso...');
+        sendChats('csv');
+    } else {
+        $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
+    }
 });
 
 $("#json").on('click', _ => {
-    $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-    $('#modalTitle').text('Creazione file json in corso...');
-    sendChats('json');
+    if ($("#dataInizio").val() <= $("#dataFine").val()) {
+        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+        $('#modalTitle').text('Creazione file json in corso...');
+        sendChats('json');
+    } else {
+        $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
+    }
 });
 
 $('.card').on('click', function (e) {
@@ -111,7 +115,12 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         type: "POST",
         dataType: "JSON",
         url: serverUrl + "proxy/getMessages.php",
-        data: {chats: chats, media: $('input[name="Media"]:checked').val(),dataInizio:$('input[name="dataInizio"]').val(), dataFine:$('input[name="dataFine"]').val()},
+        data: {
+            chats: chats,
+            media: $('input[name="Media"]:checked').val(),
+            dataInizio: $('input[name="dataInizio"]').val(),
+            dataFine: $('input[name="dataFine"]').val()
+        },
         timeout: 0,
         success: (result) => {
             if (type == 'csv')
