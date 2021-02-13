@@ -59,15 +59,15 @@ require 'layouts/head.php';
         <legend>Imposta i parametri</legend>
         <div class="row mt-4">
             <div class="col-sm-3"></div>
-            <div class="col-sm-3"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" type="date"
+            <div class="col-sm-3"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" name="dataInizio" type="date"
                                                                                       value='2013-08-14'
-                                                                                      min='1999-01-01'
+                                                                                      min='2013-08-14'
                                                                                       class="form-control is-valid"
                                                                                       max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
-            <div class="col-sm-3"><label for="dataFine">Data fine:</label> <input id="dataFine" type="date"
-                                                                                  value= <?php echo date('Y-m-d'); ?> min='1999-01-01'
+            <div class="col-sm-3"><label for="dataFine">Data fine:</label> <input id="dataFine" name="dataFine" type="date"
+                                                                                  value= <?php echo date('Y-m-d'); ?> min='2013-08-14'
                                                                                   class="form-control is-valid"
                                                                                   max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>

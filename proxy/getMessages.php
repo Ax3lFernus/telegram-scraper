@@ -5,6 +5,9 @@ require __DIR__ . '/functions.php';
 if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])) {
     $token = $_COOKIE['token'];
     $chats = $_POST['chats'];
+    $dataInizio=$_POST['dataInizio'];
+    $dataFine=$_POST['dataFine'];
+    $dataFine=date("Y-m-d",strtotime("$dataFine +1 day"));
     $messages = array(array('chat_id', 'chat_name', 'author', 'date', 'message', 'media_name'));
     $users_info = array();
     $getMedia = $_POST['media'] == 0 ? false : true;
@@ -17,7 +20,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     foreach ($chats as $chat) {
         $offset_msg_id = 0;
         do {
-            $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=' . $offset_msg_id . '&data[offset_date]=0&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
+            $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=' . $offset_msg_id . '&data[offset_date]=' . strtotime($dataFine) . '&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
             if (count($chat_messages->response->messages) <= 0) break;
             foreach ($chat_messages->response->messages as $msg) {
                 if (isset($msg->action)) continue;

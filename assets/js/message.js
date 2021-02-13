@@ -111,7 +111,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         type: "POST",
         dataType: "JSON",
         url: serverUrl + "proxy/getMessages.php",
-        data: {chats: chats, media: $('input[name="Media"]:checked').val()},
+        data: {chats: chats, media: $('input[name="Media"]:checked').val(),dataInizio:$('input[name="dataInizio"]').val(), dataFine:$('input[name="dataFine"]').val()},
         timeout: 0,
         success: (result) => {
             if (type == 'csv')
@@ -127,6 +127,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
                 $('#modalLoading').modal('hide');
         },
         error: (e) => {
+
             // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
             //window.location = 'message.php';
             //MESSAGGIO DI ERRORE TEMPORIZZATO
