@@ -26,7 +26,52 @@ $("#logout").on('click', _ => {
 
 
 $("#check_all_chats").click(function () {
-    $("input[type=checkbox]").not(this).prop('checked', $(this).prop('checked'));
+    $("input[type=checkbox][name='user']").not(this).prop('checked', $(this).prop('checked'));
+});
+
+$("#select_all_chat_user").click(function (){
+    $("#select_all_chat_channel").prop('checked', false);
+    $("#select_all_chat_groups").prop('checked', false);
+    if($("#select_all_chat_user").is(":checked")){
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val()==="user");
+        });
+    }else{
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val()>"");
+        });
+    }
+
+});
+
+$("#select_all_chat_channel").click(function (){
+    $("#select_all_chat_user").prop('checked', false);
+    $("#select_all_chat_groups").prop('checked', false);
+    if($("#select_all_chat_channel").is(":checked")) {
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "channel");
+        });
+    }
+    else{
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() >"");
+        });
+    }
+
+});
+
+$("#select_all_chat_groups").click(function (){
+    $("#select_all_chat_channel").prop('checked', false);
+    $("#select_all_chat_user").prop('checked', false);
+    if($("#select_all_chat_groups").is(":checked")) {
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "chat");
+        });
+    }else{
+        $("#chat_list tr").filter(function () {
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
+        });
+    }
 });
 
 $("input[type=checkbox]").click(() => {
@@ -35,6 +80,8 @@ $("input[type=checkbox]").click(() => {
     else
         $("#check_all_chats").prop('checked', false);
 });
+
+
 
 $("#csv").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
