@@ -40,7 +40,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                     } else {
                         $author = $chat['name'];
                     }
-                    array_push($messages, [$chat['id'], $chat['name'], $author, date("Y-m-d H:i:s", $msg->date), $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
+                    array_push($messages, [$chat['id'], $chat['name'], $author, $msg->date, $msg->message, (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
                 }
             }
             $offset_msg_id = end($chat_messages->response->messages)->id;

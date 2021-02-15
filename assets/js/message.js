@@ -196,7 +196,7 @@ getCSVFromArray = (array) => {
     csvContent = array[0] + "\n";
     array.shift();
     array.forEach((element) => {
-        dataString = element[0] + ',"' + element.slice(1, 4).join('","') + '","' + element[4].replace(/\n/g, '","') + '",' + element[5] + "\n";
+        dataString = element[0] + ',"' + element[1] + '","' + element[2] + '",' + element[3] + ',"' + element[4].replace(/\n/g, '","') + '",' + element[5] + "\n";
         csvContent += dataString;
     });
     let downloadLink = document.createElement("a");
