@@ -13,6 +13,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $users_in_groups = array(array('chat_id', 'chat_name', 'chat_type', 'user_id', 'first_name', 'last_name', 'username', 'join_date', 'role'));
     $getMedia = $_POST['media'] == 0 ? false : true;
     $getUsersInGroups = $_POST['users_groups'] == 0 ? false : true;
+    $filetype = $_POST['filetype'] == 0 ? false : true;
     $zipName = 'null';
     $media_id = 0;
 
@@ -71,7 +72,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             sleep(2);
         } while (true);
     }
-    if ($_POST['filetype']) {
+    if ($filetype) {
         //CSV
         $file_ext = '.csv';
         $messages_csv = fopen($tmpDir . '/messages.csv', 'w');
@@ -79,14 +80,30 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             fputcsv($messages_csv, $fields);
         }
         fclose($messages_csv);
-        $users_in_groups_csv = fopen($tmpDir . '/users_in_groups.csv', 'w');
-        foreach ($users_in_groups as $fields) {
-            fputcsv($users_in_groups_csv, $fields);
+        if ($getUsersInGroups) {
+            $users_in_groups_csv = fopen($tmpDir . '/users_in_groups.csv', 'w');
+            foreach ($users_in_groups as $fields) {
+                fputcsv($users_in_groups_csv, $fields);
+            }
+            fclose($users_in_groups_csv);
         }
-        fclose($users_in_groups_csv);
     } else {
         //JSON
         $file_ext = '.json';
+        $json_msg = [];
+        array_shift($messages);
+        foreach ($messages as $fields) {
+            array_push($json_msg, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'author' => $fields[2], 'date' => $fields[3], 'message' => $fields[4], 'media_name' => $fields[5]]);
+        }
+        file_put_contents($tmpDir . '/messages.json', json_encode($json_msg));
+        if ($getUsersInGroups) {
+            $json_usr = [];
+            array_shift($users_in_groups);
+            foreach ($users_in_groups as $fields) {
+                array_push($json_usr, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'chat_type' => $fields[2], 'user_id' => $fields[3], 'first_name' => $fields[4], 'last_name' => $fields[5], 'username' => $fields[6], 'join_date' => $fields[7], 'role' => $fields[8]]);
+            }
+            file_put_contents($tmpDir . '/users_in_groups.json', json_encode($json_usr));
+        }
     }
 
     echo json_encode(['messages' => ['url' => './tmp/' . $token . '/messages' . $file_ext,

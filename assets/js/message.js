@@ -165,6 +165,8 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         data: {
             chats: chats,
             media: $('input[name="Media"]:checked').val(),
+            users_groups: 1,
+            filetype: 0,
             dataInizio: $('input[name="dataInizio"]').val(),
             dataFine: $('input[name="dataFine"]').val()
         },
