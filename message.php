@@ -95,6 +95,12 @@ require 'layouts/head.php';
             <div class="col-sm-1"><input type="radio" name="Media" value="0" checked> No</div>
             <div class="col-sm-5"></div>
         </div>
+        <div class="row mt-3">
+            <div class="col-sm-5" style="text-align: right">Scaricare la lista degli utenti nei gruppi:</div>
+            <div class="col-sm-1"><input type="radio" name="UserList" value="1"> Si</div>
+            <div class="col-sm-1"><input type="radio" name="UserList" value="0" checked> No</div>
+            <div class="col-sm-5"></div>
+        </div>
     </fieldset>
     <div class="row mt-3">
         <div class="alert alert-danger " id="alertError" style="display:none;margin-top: 5px;" role="alert">

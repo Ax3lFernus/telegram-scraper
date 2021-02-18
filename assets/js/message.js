@@ -165,17 +165,14 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         data: {
             chats: chats,
             media: $('input[name="Media"]:checked').val(),
-            users_groups: 1,
-            filetype: 0,
+            users_groups: $('input[name="UserList"]:checked').val(),
+            filetype: type == 'json' ? 0 : 1,
             dataInizio: $('input[name="dataInizio"]').val(),
             dataFine: $('input[name="dataFine"]').val()
         },
         timeout: 0,
         success: (result) => {
-            if (type == 'csv')
-                getCSVFromArray(result[0]);
-            else
-                getJSONFromArray(result[0]);
+
 
             if ($('input[name="Media"]:checked').val() === '1') {
                 $('#modalTitle').text('Creazione della cartella contenente i media...');
