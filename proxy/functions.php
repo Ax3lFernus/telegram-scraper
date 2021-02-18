@@ -92,15 +92,16 @@ function getPeerInfo($id)
 {
     global $baseUrl, $token;
     $info = curl($baseUrl . 'api/users/' . $token . '/getInfo?peer=' . $id);
-    if (key($info->response) == 'Chat') {
-        $type = $info->response->Chat->_;
+    $type = ($info->response->type == 'chat' || $info->response->type == 'supergroup') ? 'chat' : $info->response->type;
+    if ($type == 'chat' || $type == 'channel') {
         //Chat di gruppo/Canali
-        if (isset($info->response->Chat->title))
-            $name = $info->response->Chat->title;
-        else
+        if (!isset($info->response->Chat->title))
             return null;
+        if (isset($info->response->Chat->deactivated))
+            if ($info->response->Chat->deactivated == true)
+                return null;
+        $name = $info->response->Chat->title;
     } else {
-        $type = $info->response->User->bot ? "bot" : "user";
         //Utente/Bot
         if (isset($info->response->User->first_name)) {
             $name = $info->response->User->first_name;
