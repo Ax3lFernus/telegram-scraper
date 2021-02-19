@@ -2,8 +2,7 @@
 $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token. '/medias';
 
 if (file_exists($tmpDir)) {
-    array_map('unlink', array_filter((array)glob($tmpDir . "/*")));
-    rmdir($tmpDir);
+    delete_directory($tmpDir);
 }
 mkdir($tmpDir, 0777, true);
 

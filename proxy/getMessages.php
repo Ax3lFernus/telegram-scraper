@@ -20,8 +20,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
 
     if (file_exists($tmpDir)) {
-        array_map('unlink', array_filter((array)glob($tmpDir . "/*")));
-        rmdir($tmpDir);
+        delete_directory($tmpDir);
     }
     mkdir($tmpDir, 0777, true);
 

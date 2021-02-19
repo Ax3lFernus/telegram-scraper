@@ -172,17 +172,30 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         },
         timeout: 0,
         success: (result) => {
-
-
-            if ($('input[name="Media"]:checked').val() === '1') {
-                $('#modalTitle').text('Creazione della cartella contenente i media...');
-                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                setTimeout(checkMediaDownloadStatus.bind(null, result[2], result[1]), 1000);
-            } else
-                $('#modalLoading').modal('hide');
+            $('#modalLoading').modal('hide');
+            let newWin = window.open(result.messages.url);
+            $('#md5_msg').text(result.messages.md5);
+            $('#sha_msg').text(result.messages.sha256);
+            if(!newWin || newWin.closed || typeof newWin.closed=='undefined')
+            {
+                alert("Consenti i popup dal tuo browser.");
+            }
+            if(result.users_in_groups != null) {
+                window.open(result.users_in_groups.url);
+                $('#md5_usr').text(result.users_in_groups.md5);
+                $('#sha_usr').text(result.users_in_groups.sha256);
+            }
+            $('#modalHash').modal('show').on('hide.bs.modal', function () {
+                if ($('input[name="Media"]:checked').val() === '1') {
+                    $('#modalLoading').modal('show');
+                    $('#modalTitle').text('Creazione della cartella contenente i media...');
+                    $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
+                    setTimeout(checkMediaDownloadStatus.bind(null, result[2], result[1]), 1000);
+                } else
+                    $('#modalLoading').modal('hide');
+            });
         },
         error: (e) => {
-
             // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
             //window.location = 'message.php';
             //MESSAGGIO DI ERRORE TEMPORIZZATO
@@ -244,10 +257,9 @@ getCheckedChats = () => {
 
 checkMediaDownloadStatus = (media_num, zipName) => {
     $.ajax({
-        url: './proxy/downloadMediaStatus.php',
-        type: 'get',
+        url: './proxy/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName,
+        type: 'GET',
         timeout: 2000,
-        data: {'media_num': media_num, 'zip_name': zipName},
         success: (result) => {
             let percentage = parseFloat(result.percentage);
             let status = result.status;

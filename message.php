@@ -138,6 +138,39 @@ require 'layouts/head.php';
         </div>
     </div>
 </div>
+<!-- Modal SHA/MD5 -->
+<div class="modal fade" id="modalHash" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Doppio Hash</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td scope="col"><b>Hash</b></td>
+                        <td scope="col"><b>Messaggi</b></td>
+                        <td scope="col"><b>Lista utenti</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>MD5</b></td>
+                        <td><p id="md5_msg" class="text-break">Non richiesto</p></td>
+                        <td><p id="md5_usr" class="text-break">Non richiesto</p></td>
+                    </tr>
+                    <tr>
+                        <td><b>SHA256</b></td>
+                        <td><p id="sha_msg" class="text-break">Non richiesto</p></td>
+                        <td><p id="sha_usr" class="text-break">Non richiesto</p></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php require('layouts/scripts.php'); ?>
 <script src="./assets/js/message.js"></script>
 </body>
