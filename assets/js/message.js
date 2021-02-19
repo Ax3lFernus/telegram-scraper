@@ -95,6 +95,7 @@ $("#csv").on('click', _ => {
             $('#modalTitle').text('Creazione file csv in corso...');
             sendChats('csv');
         }else{
+            $('#alertText').text('Seleziona almeno una chat.');
             $('#alertError').addClass('show');
             setTimeout(_ => $('#alertError').removeClass('show'), 3000);
         }
@@ -106,11 +107,16 @@ $("#csv").on('click', _ => {
 $("#json").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
         if(getCheckedChats().length > 0) {
+            $('#md5_msg').text('Non richiesto');
+            $('#sha_msg').text('Non richiesto');
+            $('#md5_usr').text('Non richiesto');
+            $('#sha_usr').text('Non richiesto');
             $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
             $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
             $('#modalTitle').text('Creazione file csv in corso...');
             sendChats('json');
         }else{
+            $('#alertText').text('Seleziona almeno una chat.');
             $('#alertError').addClass('show');
             setTimeout(_ => $('#alertError').removeClass('show'), 3000);
         }
@@ -210,9 +216,11 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
             });
         },
         error: (e) => {
-            // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-            //window.location = 'message.php';
-            //MESSAGGIO DI ERRORE TEMPORIZZATO
+            $('#modalLoading').modal('hide');
+            $('#modalHash').modal('hide');
+            $('#alertText').text('Si è verificato un errore durante l\'elaborazione.');
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 4000);
         }
     });
 }

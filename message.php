@@ -17,7 +17,7 @@ require 'layouts/head.php';
 </nav>
 <div id="page_body" class="container" style="display:none;">
     <div class="alert alert-danger fade" id="alertError" style="margin-top: 5px;" role="alert">
-        <strong>Errore!</strong> Seleziona almeno una chat.
+        <strong>Errore: </strong><span id="alertText">Seleziona almeno una chat.</span>
     </div>
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona le chat</legend>
