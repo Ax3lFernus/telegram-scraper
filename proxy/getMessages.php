@@ -5,14 +5,14 @@ require __DIR__ . '/functions.php';
 if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media']) && isset($_POST['users_groups']) && isset($_POST['filetype'])) {
     $token = $_COOKIE['token'];
     $chats = $_POST['chats'];
-    $dataInizio = $_POST['dataInizio'];
+    $dataInizio = strtotime($_POST['dataInizio']);
     $dataFine = $_POST['dataFine'];
     $dataFine = date("Y-m-d", strtotime("$dataFine +1 day"));
     $messages = array(array('chat_id', 'chat_name', 'author', 'date', 'message', 'media_name'));
     $users_info = array();
     $users_in_groups = array(array('chat_id', 'chat_name', 'chat_type', 'user_id', 'first_name', 'last_name', 'username', 'join_date', 'role'));
-    $getMedia = $_POST['media'] == 0 ? false : true;
-    $getUsersInGroups = $_POST['users_groups'] == 0 ? false : true;
+    $getMedia = $_POST['media'] == 'true';
+    $getUsersInGroups = $_POST['users_groups'] == 'true';
     $filetype = $_POST['filetype'] == 0 ? false : true;
     $zipName = 'null';
     $media_id = 0;
@@ -47,7 +47,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             $chat_messages = curl($baseUrl . 'api/users/' . $token . '/messages.getHistory?data[peer]=' . $chat['id'] . '&data[offset_id]=' . $offset_msg_id . '&data[offset_date]=' . strtotime($dataFine) . '&data[add_offset]=0&data[limit]=100&data[max_id]=0&data[min_id]=0');
             if (count($chat_messages->response->messages) <= 0) break;
             foreach ($chat_messages->response->messages as $msg) {
-                if (date("Y-m-d", $msg->date) >= $dataInizio) {
+                if ($msg->date >= $dataInizio) {
                     if (isset($msg->action)) continue;
                     if (isset($msg->media) && $getMedia) {
                         array_push($media, [$chat['id'], $msg->id, ++$media_id]);
@@ -68,7 +68,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                 }
             }
             $offset_msg_id = end($chat_messages->response->messages)->id;
-            sleep(2);
+            sleep(1);
         } while (true);
     }
     if ($filetype) {

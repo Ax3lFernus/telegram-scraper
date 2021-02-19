@@ -16,10 +16,13 @@ require 'layouts/head.php';
     <button id="logout" class="btn btn-danger" type="button">Logout</button>
 </nav>
 <div id="page_body" class="container" style="display:none;">
+    <div class="alert alert-danger fade" id="alertError" style="margin-top: 5px;" role="alert">
+        <strong>Errore!</strong> Seleziona almeno una chat.
+    </div>
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
-            <div class="col-3 ms-5 form-check form-switch" style="margin: auto 0;padding-right: 100px;">
+            <div class="col-4 form-check form-switch ps-5">
                     <input class="form-check-input" type="checkbox" id="check_all_chats">
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
             </div>
@@ -71,43 +74,44 @@ require 'layouts/head.php';
     <fieldset class="border mt-3 p-2">
         <legend>Imposta i parametri</legend>
         <div class="row mt-4">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-3"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" name="dataInizio"
+            <div class="col"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" name="dataInizio"
                                                                                       type="date"
                                                                                       value='2013-08-14'
                                                                                       min='2013-08-14'
-                                                                                      class="form-control is-valid"
+                                                                                      class="form-control"
                                                                                       max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
-            <div class="col-sm-3"><label for="dataFine">Data fine:</label> <input id="dataFine" name="dataFine"
+            <div class="col"><label for="dataFine">Data fine:</label> <input id="dataFine" name="dataFine"
                                                                                   type="date"
                                                                                   value= <?php echo date('Y-m-d'); ?> min='2013-08-14'
-                                                                                  class="form-control is-valid"
+                                                                                  class="form-control"
                                                                                   max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
-            <div class="col-sm-3"></div>
         </div>
         <div class="row mt-3">
-            <div class="col-sm-5" style="text-align: right">Includere i media:</div>
-            <div class="col-sm-1"><input type="radio" name="Media" value="1"> Si</div>
-            <div class="col-sm-1"><input type="radio" name="Media" value="0" checked> No</div>
-            <div class="col-sm-5"></div>
+            <div class="col"></div>
+            <div class="col-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="user_list">
+                    <label class="form-check-label" for="user_list">Scaricare la lista degli utenti nei gruppi</label>
+                </div>
+            </div>
+            <div class="col"></div>
         </div>
         <div class="row mt-3">
-            <div class="col-sm-5" style="text-align: right">Scaricare la lista degli utenti nei gruppi:</div>
-            <div class="col-sm-1"><input type="radio" name="UserList" value="1"> Si</div>
-            <div class="col-sm-1"><input type="radio" name="UserList" value="0" checked> No</div>
-            <div class="col-sm-5"></div>
+            <div class="col"></div>
+            <div class="col-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="media">
+                    <label class="form-check-label" for="media">Includere i media</label>
+                </div>
+            </div>
+            <div class="col"></div>
         </div>
     </fieldset>
     <div class="row mt-3">
-        <div class="alert alert-danger " id="alertError" style="display:none;margin-top: 5px;" role="alert">
-            <!--alert-dismissible fade show!-->
-            <strong>Errore!</strong> Seleziona almeno una chat.
-            <!--<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>!-->
-        </div>
         <div class="col-sm-4"></div>
         <div class="col-sm-2">
             <button id="csv" class="btn btn-success" type="button">Download csv</button>

@@ -12,7 +12,11 @@ if (isset($_COOKIE['token']) && isset($_GET['peer_id'])) {
         header("Content-Type: image/jpeg");
         echo $picture;
     } else {
-        http_response_code(500);
-        die();
+        header("Content-Type: image/png");
+        $filename = dirname(__DIR__, 1) . '/assets/images/default_user.png';
+        $file = fopen($filename, "rb");
+        $contents = fread($file, filesize($filename));
+        fclose($file);
+        echo $contents;
     }
 }

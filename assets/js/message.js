@@ -1,8 +1,8 @@
 /*
-* Telegram Scraper v1.0.0
+* Telegram Scraper v1.1.0
 * Content: message.php scripts
 * Author: Alessandro Annese & Davide De Salvo
-* Last update: 11/02/2021
+* Last update: 19/02/2021
 */
 $("#logout").on('click', _ => {
     $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');
@@ -85,10 +85,19 @@ $("input[type=checkbox]").click(() => {
 
 $("#csv").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
-        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
-        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-        $('#modalTitle').text('Creazione file csv in corso...');
-        sendChats('csv');
+        if(getCheckedChats().length > 0) {
+            $('#md5_msg').text('Non richiesto');
+            $('#sha_msg').text('Non richiesto');
+            $('#md5_usr').text('Non richiesto');
+            $('#sha_usr').text('Non richiesto');
+            $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+            $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+            $('#modalTitle').text('Creazione file csv in corso...');
+            sendChats('csv');
+        }else{
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 3000);
+        }
     } else {
         $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
     }
@@ -96,10 +105,15 @@ $("#csv").on('click', _ => {
 
 $("#json").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
-        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
-        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-        $('#modalTitle').text('Creazione file json in corso...');
-        sendChats('json');
+        if(getCheckedChats().length > 0) {
+            $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+            $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+            $('#modalTitle').text('Creazione file csv in corso...');
+            sendChats('json');
+        }else{
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 3000);
+        }
     } else {
         $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
     }
@@ -164,8 +178,8 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         url: serverUrl + "proxy/getMessages.php",
         data: {
             chats: chats,
-            media: $('input[name="Media"]:checked').val(),
-            users_groups: $('input[name="UserList"]:checked').val(),
+            media: $('#media').prop('checked'),
+            users_groups: $('#user_list').prop('checked'),
             filetype: type == 'json' ? 0 : 1,
             dataInizio: $('input[name="dataInizio"]').val(),
             dataFine: $('input[name="dataFine"]').val()
