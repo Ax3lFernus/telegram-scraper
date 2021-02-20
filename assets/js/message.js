@@ -10,7 +10,7 @@ $("#logout").on('click', _ => {
     $.ajax({
         type: "GET",
         dataType: "JSON",
-        url: serverUrl + "proxy/logout.php",
+        url: serverUrl + "functions/logout.php",
         timeout: 120000,
         success: (result) => {
             console.log(result);
@@ -181,7 +181,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
     $.ajax({
         type: "POST",
         dataType: "JSON",
-        url: serverUrl + "proxy/getMessages.php",
+        url: serverUrl + "functions/getMessages.php",
         data: {
             chats: chats,
             media: $('#media').prop('checked'),
@@ -279,7 +279,7 @@ getCheckedChats = () => {
 
 checkMediaDownloadStatus = (media_num, zipName) => {
     $.ajax({
-        url: './proxy/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName,
+        url: './functions/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName,
         type: 'GET',
         timeout: 2000,
         success: (result) => {

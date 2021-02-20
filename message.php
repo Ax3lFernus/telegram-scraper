@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/proxy/checkToken.php';
-require __DIR__ . '/proxy/getDialogs.php';
+require __DIR__ . '/functions/checkToken.php';
+require __DIR__ . '/functions/getDialogs.php';
 $style = "<link href=\"assets/css/message.css\" rel=\"stylesheet\">";
 $page_title = "Messaggi";
 require 'layouts/head.php';
@@ -59,7 +59,7 @@ require 'layouts/head.php';
                     <?php
                     for ($i = 0; $i < count($chat_list); $i++) {
                         echo ' <tr>
-                                <td><img src="./proxy/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
+                                <td><img src="./functions/profilePicture.php?peer_id=' . $chat_list[$i]['peerID'] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
                                 <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
                                 <td><input type="checkbox" name="user"></td>
                                 <input type="hidden" value="' . $chat_list[$i]['peerID'] . '" name="chatID"><input type="hidden" value="' . htmlspecialchars($chat_list[$i]['name']) . '" name="chatName"><input type="hidden" value="' . $chat_list[$i]['peerType'] . '" name="chatType">

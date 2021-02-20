@@ -14,7 +14,7 @@ $("#login").submit(function (e) {
         $.ajax({
             type: "POST",
             dataType: "JSON",
-            url: serverUrl + "proxy/login.php",
+            url: serverUrl + "functions/login.php",
             data: {tel: $("#inputPhone").val()},
             timeout: 120000,
             success: (result) => {
@@ -41,7 +41,7 @@ $("#login").submit(function (e) {
         $.ajax({
             type: "POST",
             dataType: "JSON",
-            url: serverUrl + "proxy/login.php",
+            url: serverUrl + "functions/login.php",
             data: {token: Cookies.get('token'), code: $("#inputCode").val()},
             timeout: 120000,
             success: (result) => {

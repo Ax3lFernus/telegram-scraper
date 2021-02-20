@@ -2,11 +2,14 @@
 
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
+use Dompdf\Dompdf;
+
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1), '.env');
 $dotenv->load();
 $dotenv->required('TELEGRAM_API_SERVER_BASE_URL')->notEmpty();
 
 $mimes = new Mimey\MimeTypes;
+$dompdf = new Dompdf();
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
 

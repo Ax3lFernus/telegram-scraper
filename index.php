@@ -1,5 +1,5 @@
 <?php
-    require 'proxy/checkToken.php';
+    require 'functions/checkToken.php';
     $style = "<link href=\"assets/css/signin.css\" rel=\"stylesheet\">";
     $page_title = "Login";
     require 'layouts/head.php';
