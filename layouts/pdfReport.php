@@ -32,9 +32,9 @@ $htmlReportPage = '
             </ul>
         </td>
         <td style="width: 50%" align="right">
-            <strong>Dati richiesti il:</strong> ' . $request_date .'
+            <strong>Dati richiesti il:</strong> ' . $request_date .' UTC
             <br/>
-            <strong>Download terminato il:</strong> ' . date("d-m-Y h:i:s") .'
+            <strong>Recupero messaggi terminato il:</strong> ' . date("d-m-Y h:i:s") .' UTC
             <br/>
             <strong>Totale messaggi scaricati: </strong> '. count($messages) .'
             <br/>
