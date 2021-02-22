@@ -2,17 +2,17 @@
 $htmlReportPage = '
 <table style="width: 100%">
     <tr>
-        <td valign="top" style="width: 50%; padding-top: 20px; padding-left: 10px;">
+        <td valign="top" style="width: 50%;">
             <img src="' . dirname(__DIR__, 1) . '/assets/images/logo.png" alt="Telegram Scraper Logo" width="50"/>
         </td>
         <td style="width: 50%;" align="right">
             <h3>Telegram Scraper v1.1.0</h3>
-            <pre>
+            <p style="font-size: small;">
                 Sorgente:
                 <a href="https://github.com/ax3lfernus/telegram-scraper" style="margin-bottom: 5px;">https://github.com/ax3lfernus/telegram-scraper</a>
                 TelegramApiServer v1.10.5:
                 <a href="https://github.com/xtrime-ru/TelegramApiServer">https://github.com/xtrime-ru/TelegramApiServer</a>
-            </pre>
+            </p>
         </td>
     </tr>
 
