@@ -16,6 +16,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $filetype = $_POST['filetype'] == 0 ? false : true;
     $zipName = 'null';
     $media_id = 0;
+    $request_date = date("d-m-Y h:i:s");
 
     $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
 
@@ -105,6 +106,8 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             file_put_contents($tmpDir . '/users_in_groups.json', json_encode($json_usr));
         }
     }
+
+    require __DIR__ . '/getReport.php';
 
     echo json_encode(['messages' => ['url' => './tmp/' . $token . '/messages' . $file_ext,
         'md5' => hash_file('md5', $tmpDir . '/messages' . $file_ext),

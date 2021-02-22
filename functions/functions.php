@@ -2,16 +2,18 @@
 
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
-use Dompdf\Dompdf;
+use Spipu\Html2Pdf\Html2Pdf;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1), '.env');
 $dotenv->load();
 $dotenv->required('TELEGRAM_API_SERVER_BASE_URL')->notEmpty();
 
 $mimes = new Mimey\MimeTypes;
-$dompdf = new Dompdf();
+$html2pdf = new Html2Pdf('P', 'A4', 'it');
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
+$appLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'], 1);
 
 function generateRandomString($length = 10)
 {
