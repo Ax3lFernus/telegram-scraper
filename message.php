@@ -154,8 +154,8 @@ require 'layouts/head.php';
                 <table class="table">
                     <tr>
                         <td scope="col"><b>Hash</b></td>
-                        <td scope="col"><b>Files</b></td>
-                        <td scope="col"><b>Medias</b></td>
+                        <td scope="col"><b>Zip con i File</b></td>
+                        <td scope="col"><b>Zip con i Media</b></td>
                     </tr>
                     <tr>
                         <td><b>MD5</b></td>
