@@ -144,7 +144,7 @@ require 'layouts/head.php';
 </div>
 <!-- Modal SHA/MD5 -->
 <div class="modal fade" id="modalHash" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Doppio Hash</h5>
