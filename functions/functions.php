@@ -2,13 +2,17 @@
 
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
+use Spipu\Html2Pdf\Html2Pdf;
+
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1), '.env');
 $dotenv->load();
 $dotenv->required('TELEGRAM_API_SERVER_BASE_URL')->notEmpty();
 
 $mimes = new Mimey\MimeTypes;
+$html2pdf = new Html2Pdf('P', 'A4', 'it');
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
+$telegramScraperVersion = \Composer\InstalledVersions::getPrettyVersion('ax3lfernus/telegramscraper');
 
 function generateRandomString($length = 10)
 {
@@ -92,15 +96,16 @@ function getPeerInfo($id)
 {
     global $baseUrl, $token;
     $info = curl($baseUrl . 'api/users/' . $token . '/getInfo?peer=' . $id);
-    if (key($info->response) == 'Chat') {
-        $type = $info->response->Chat->_;
+    $type = ($info->response->type == 'chat' || $info->response->type == 'supergroup') ? 'chat' : $info->response->type;
+    if ($type == 'chat' || $type == 'channel') {
         //Chat di gruppo/Canali
-        if (isset($info->response->Chat->title))
-            $name = $info->response->Chat->title;
-        else
+        if (!isset($info->response->Chat->title))
             return null;
+        if (isset($info->response->Chat->deactivated))
+            if ($info->response->Chat->deactivated == true)
+                return null;
+        $name = $info->response->Chat->title;
     } else {
-        $type = $info->response->User->bot ? "bot" : "user";
         //Utente/Bot
         if (isset($info->response->User->first_name)) {
             $name = $info->response->User->first_name;
@@ -122,4 +127,23 @@ function deleteMadelineSession($token)
     global $baseUrl;
     curl($baseUrl . "system/removeSession?session=users/" . $token);
     curl($baseUrl . "system/unlinkSessionFile?session=users/" . $token);
+}
+
+function delete_directory($dirname)
+{
+    if (is_dir($dirname))
+        $dir_handle = opendir($dirname);
+    if (!$dir_handle)
+        return false;
+    while ($file = readdir($dir_handle)) {
+        if ($file != "." && $file != "..") {
+            if (!is_dir($dirname . "/" . $file))
+                unlink($dirname . "/" . $file);
+            else
+                delete_directory($dirname . '/' . $file);
+        }
+    }
+    closedir($dir_handle);
+    rmdir($dirname);
+    return true;
 }

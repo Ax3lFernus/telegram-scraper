@@ -1,8 +1,8 @@
 /*
-* Telegram Scraper v1.0.0
+* Telegram Scraper v1.1.0
 * Content: message.php scripts
 * Author: Alessandro Annese & Davide De Salvo
-* Last update: 11/02/2021
+* Last update: 19/02/2021
 */
 $("#login").submit(function (e) {
     e.preventDefault();
@@ -14,7 +14,7 @@ $("#login").submit(function (e) {
         $.ajax({
             type: "POST",
             dataType: "JSON",
-            url: serverUrl + "proxy/login.php",
+            url: serverUrl + "functions/login.php",
             data: {tel: $("#inputPhone").val()},
             timeout: 120000,
             success: (result) => {
@@ -41,7 +41,7 @@ $("#login").submit(function (e) {
         $.ajax({
             type: "POST",
             dataType: "JSON",
-            url: serverUrl + "proxy/login.php",
+            url: serverUrl + "functions/login.php",
             data: {token: Cookies.get('token'), code: $("#inputCode").val()},
             timeout: 120000,
             success: (result) => {

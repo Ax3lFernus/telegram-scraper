@@ -1,8 +1,8 @@
 /*
-* Telegram Scraper v1.0.0
+* Telegram Scraper v1.1.0
 * Content: message.php scripts
 * Author: Alessandro Annese & Davide De Salvo
-* Last update: 11/02/2021
+* Last update: 19/02/2021
 */
 $("#logout").on('click', _ => {
     $('#modalLoading').modal({backdrop: 'static', keyboard: false, show: true, focus: true}).modal('show');
@@ -10,7 +10,7 @@ $("#logout").on('click', _ => {
     $.ajax({
         type: "GET",
         dataType: "JSON",
-        url: serverUrl + "proxy/logout.php",
+        url: serverUrl + "functions/logout.php",
         timeout: 120000,
         success: (result) => {
             console.log(result);
@@ -29,45 +29,44 @@ $("#check_all_chats").click(function () {
     $("input[type=checkbox][name='user']").not(this).prop('checked', $(this).prop('checked'));
 });
 
-$("#select_all_chat_user").click(function (){
+$("#select_all_chat_user").click(function () {
     $("#select_all_chat_channel").prop('checked', false);
     $("#select_all_chat_groups").prop('checked', false);
-    if($("#select_all_chat_user").is(":checked")){
+    if ($("#select_all_chat_user").is(":checked")) {
         $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val()==="user");
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "user");
         });
-    }else{
+    } else {
         $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val()>"");
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
         });
     }
 
 });
 
-$("#select_all_chat_channel").click(function (){
+$("#select_all_chat_channel").click(function () {
     $("#select_all_chat_user").prop('checked', false);
     $("#select_all_chat_groups").prop('checked', false);
-    if($("#select_all_chat_channel").is(":checked")) {
+    if ($("#select_all_chat_channel").is(":checked")) {
         $("#chat_list tr").filter(function () {
             $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "channel");
         });
-    }
-    else{
+    } else {
         $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() >"");
+            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
         });
     }
 
 });
 
-$("#select_all_chat_groups").click(function (){
+$("#select_all_chat_groups").click(function () {
     $("#select_all_chat_channel").prop('checked', false);
     $("#select_all_chat_user").prop('checked', false);
-    if($("#select_all_chat_groups").is(":checked")) {
+    if ($("#select_all_chat_groups").is(":checked")) {
         $("#chat_list tr").filter(function () {
             $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "chat");
         });
-    }else{
+    } else {
         $("#chat_list tr").filter(function () {
             $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
         });
@@ -82,13 +81,22 @@ $("input[type=checkbox]").click(() => {
 });
 
 
-
 $("#csv").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
-        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
-        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-        $('#modalTitle').text('Creazione file csv in corso...');
-        sendChats('csv');
+        if (getCheckedChats().length > 0) {
+            $('#md5_files').text('Non richiesto');
+            $('#sha_files').text('Non richiesto');
+            $('#md5_medias').text('Non richiesto');
+            $('#sha_medias').text('Non richiesto');
+            $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+            $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+            $('#modalTitle').text('Creazione file csv in corso...');
+            sendChats('csv');
+        } else {
+            $('#alertText').text('Seleziona almeno una chat.');
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 3000);
+        }
     } else {
         $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
     }
@@ -96,10 +104,20 @@ $("#csv").on('click', _ => {
 
 $("#json").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
-        $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
-        $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
-        $('#modalTitle').text('Creazione file json in corso...');
-        sendChats('json');
+        if (getCheckedChats().length > 0) {
+            $('#md5_files').text('Non richiesto');
+            $('#sha_files').text('Non richiesto');
+            $('#md5_medias').text('Non richiesto');
+            $('#sha_medias').text('Non richiesto');
+            $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
+            $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
+            $('#modalTitle').text('Creazione file csv in corso...');
+            sendChats('json');
+        } else {
+            $('#alertText').text('Seleziona almeno una chat.');
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 3000);
+        }
     } else {
         $("#dataFine,#dataInizio").attr('class', 'form-control is-invalid');
     }
@@ -161,32 +179,54 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
     $.ajax({
         type: "POST",
         dataType: "JSON",
-        url: serverUrl + "proxy/getMessages.php",
+        url: serverUrl + "functions/getMessages.php",
         data: {
             chats: chats,
-            media: $('input[name="Media"]:checked').val(),
+            media: $('#media').prop('checked'),
+            users_groups: $('#user_list').prop('checked'),
+            filetype: type == 'json' ? 0 : 1,
             dataInizio: $('input[name="dataInizio"]').val(),
             dataFine: $('input[name="dataFine"]').val()
         },
         timeout: 0,
         success: (result) => {
-            if (type == 'csv')
-                getCSVFromArray(result[0]);
-            else
-                getJSONFromArray(result[0]);
-
-            if ($('input[name="Media"]:checked').val() === '1') {
-                $('#modalTitle').text('Creazione della cartella contenente i media...');
-                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                setTimeout(checkMediaDownloadStatus.bind(null, result[2], result[1]), 1000);
-            } else
-                $('#modalLoading').modal('hide');
+            $('#modalLoading').modal('hide');
+            let newWin = window.open(result.files.url);
+            $('#md5_files').text(result.files.md5);
+            $('#sha_files').text(result.files.sha256);
+            if ($('#media').prop('checked')) {
+                if(result.media.num_media > 0) {
+                    $('#md5_medias').text('Download in corso...');
+                    $('#sha_medias').text('Download in corso...');
+                }else{
+                    $('#md5_medias').text('Nessun media rilevato');
+                    $('#sha_medias').text('Nessun media rilevato');
+                }
+            }
+            if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                alert("Consenti i popup dal tuo browser.");
+            }
+            $('#modalHash').modal('show').on('hide.bs.modal', function () {
+                if ($('#media').prop('checked')) {
+                    if (result.media.num_media > 0) {
+                        $('#md5_medias').text('Download in corso...');
+                        $('#sha_medias').text('Download in corso...');
+                        $('#modalLoading').modal('show');
+                        $('#modalTitle').text('Creazione della cartella contenente i media...');
+                        $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
+                        setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name), 1000);
+                    } else
+                        $('#modalLoading').modal('hide');
+                } else
+                    $('#modalLoading').modal('hide');
+            });
         },
         error: (e) => {
-
-            // $('#modalTitle').text('Errore nella creazione del file...').css("color","red");
-            //window.location = 'message.php';
-            //MESSAGGIO DI ERRORE TEMPORIZZATO
+            $('#modalLoading').modal('hide');
+            $('#modalHash').modal('hide');
+            $('#alertText').text('Si è verificato un errore durante l\'elaborazione.');
+            $('#alertError').addClass('show');
+            setTimeout(_ => $('#alertError').removeClass('show'), 4000);
         }
     });
 }
@@ -245,10 +285,9 @@ getCheckedChats = () => {
 
 checkMediaDownloadStatus = (media_num, zipName) => {
     $.ajax({
-        url: './proxy/downloadMediaStatus.php',
-        type: 'get',
+        url: './functions/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName,
+        type: 'GET',
         timeout: 2000,
-        data: {'media_num': media_num, 'zip_name': zipName},
         success: (result) => {
             let percentage = parseFloat(result.percentage);
             let status = result.status;
@@ -258,7 +297,13 @@ checkMediaDownloadStatus = (media_num, zipName) => {
             if (status) {
                 $("#modalLoading").modal('hide');
                 $('#modalStripe').removeClass('bg-warning');
-                window.location.href = './tmp/' + zipName;
+                let newWin = window.open(result.url);
+                $('#md5_medias').text(result.md5);
+                $('#sha_medias').text(result.sha256);
+                if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                    alert("Consenti i popup dal tuo browser.");
+                }
+                $('#modalHash').modal('show').off('hide.bs.modal');
             } else {
                 setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
             }
