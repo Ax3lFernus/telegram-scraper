@@ -14,20 +14,20 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $getMedia = $_POST['media'] == 'true';
     $getUsersInGroups = $_POST['users_groups'] == 'true';
     $filetype = $_POST['filetype'] == 0 ? false : true;
-    $zipName = 'null';
+    $zipName = generateRandomString(15);
     $media_id = 0;
     $request_date = date("d-m-Y h:i:s");
 
     $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
+    $filesDir = $tmpDir . '/files';
 
-    if (file_exists($tmpDir)) {
-        delete_directory($tmpDir);
+    if (file_exists($filesDir)) {
+        delete_directory($filesDir);
     }
-    mkdir($tmpDir, 0777, true);
+    mkdir($filesDir, 0777, true);
 
     if ($getMedia) {
         $media = array();
-        $zipName = generateRandomString(15);
     }
     foreach ($chats as $chat) {
         $offset_msg_id = 0;
@@ -75,14 +75,13 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     }
     if ($filetype) {
         //CSV
-        $file_ext = '.csv';
-        $messages_csv = fopen($tmpDir . '/messages.csv', 'w');
+        $messages_csv = fopen($filesDir . '/messages.csv', 'w');
         foreach ($messages as $fields) {
             fputcsv($messages_csv, $fields);
         }
         fclose($messages_csv);
         if ($getUsersInGroups) {
-            $users_in_groups_csv = fopen($tmpDir . '/users_in_groups.csv', 'w');
+            $users_in_groups_csv = fopen($filesDir . '/users_in_groups.csv', 'w');
             foreach ($users_in_groups as $fields) {
                 fputcsv($users_in_groups_csv, $fields);
             }
@@ -90,32 +89,33 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
         }
     } else {
         //JSON
-        $file_ext = '.json';
         $json_msg = [];
         array_shift($messages);
         foreach ($messages as $fields) {
             array_push($json_msg, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'author' => $fields[2], 'date' => $fields[3], 'message' => $fields[4], 'media_name' => $fields[5]]);
         }
-        file_put_contents($tmpDir . '/messages.json', json_encode($json_msg));
+        file_put_contents($filesDir . '/messages.json', json_encode($json_msg));
         if ($getUsersInGroups) {
             $json_usr = [];
             array_shift($users_in_groups);
             foreach ($users_in_groups as $fields) {
                 array_push($json_usr, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'chat_type' => $fields[2], 'user_id' => $fields[3], 'first_name' => $fields[4], 'last_name' => $fields[5], 'username' => $fields[6], 'join_date' => $fields[7], 'role' => $fields[8]]);
             }
-            file_put_contents($tmpDir . '/users_in_groups.json', json_encode($json_usr));
+            file_put_contents($filesDir . '/users_in_groups.json', json_encode($json_usr));
         }
     }
 
     require __DIR__ . '/getReport.php';
 
-    echo json_encode(['messages' => ['url' => './tmp/' . $token . '/messages' . $file_ext,
-        'md5' => hash_file('md5', $tmpDir . '/messages' . $file_ext),
-        'sha256' => hash_file('sha256', $tmpDir . '/messages' . $file_ext)],
-        'users_in_groups' => $getUsersInGroups ? ['url' => './tmp/' . $token . '/users_in_groups' . $file_ext,
-            'md5' => hash_file('md5', $tmpDir . '/users_in_groups' . $file_ext),
-            'sha256' => hash_file('sha256', $tmpDir . '/users_in_groups' . $file_ext)] : null,
-        'media' => $getMedia ? ['zip_name' => $zipName . '.zip', 'num_media' => $media_id] : null]);
+    zipFolder($filesDir, $zipName . '_files');
+    if (file_exists($filesDir)) {
+        delete_directory($filesDir);
+    }
+
+    echo json_encode(['files' => ['url' => './tmp/' . $token . '/' . $zipName . '_files.zip',
+        'md5' => hash_file('md5', $tmpDir . '/' . $zipName . '_files.zip'),
+        'sha256' => hash_file('sha256', $tmpDir . '/' . $zipName . '_files.zip')],
+        'media' => $getMedia ? ['zip_name' => $zipName . '_medias.zip', 'num_media' => $media_id] : null]);
 
     $size = ob_get_length();
     header('Content-Type: application/json');

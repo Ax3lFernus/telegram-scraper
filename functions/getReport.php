@@ -5,4 +5,4 @@ require dirname(__DIR__, 1) . '/layouts/pdfReport.php';
 
 $html2pdf->setDefaultFont('helvetica');
 $html2pdf->writeHTML($htmlReportPage);
-$html2pdf->output($tmpDir . '/report.pdf', 'F');
+$html2pdf->output($tmpDir . '/files/report.pdf', 'F');

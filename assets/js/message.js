@@ -86,10 +86,10 @@ $("input[type=checkbox]").click(() => {
 $("#csv").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
         if(getCheckedChats().length > 0) {
-            $('#md5_msg').text('Non richiesto');
-            $('#sha_msg').text('Non richiesto');
-            $('#md5_usr').text('Non richiesto');
-            $('#sha_usr').text('Non richiesto');
+            $('#md5_files').text('Non richiesto');
+            $('#sha_files').text('Non richiesto');
+            $('#md5_medias').text('Non richiesto');
+            $('#sha_medias').text('Non richiesto');
             $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
             $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
             $('#modalTitle').text('Creazione file csv in corso...');
@@ -107,10 +107,10 @@ $("#csv").on('click', _ => {
 $("#json").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
         if(getCheckedChats().length > 0) {
-            $('#md5_msg').text('Non richiesto');
-            $('#sha_msg').text('Non richiesto');
-            $('#md5_usr').text('Non richiesto');
-            $('#sha_usr').text('Non richiesto');
+            $('#md5_files').text('Non richiesto');
+            $('#sha_files').text('Non richiesto');
+            $('#md5_medias').text('Non richiesto');
+            $('#sha_medias').text('Non richiesto');
             $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
             $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
             $('#modalTitle').text('Creazione file csv in corso...');
@@ -193,24 +193,19 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         timeout: 0,
         success: (result) => {
             $('#modalLoading').modal('hide');
-            let newWin = window.open(result.messages.url);
-            $('#md5_msg').text(result.messages.md5);
-            $('#sha_msg').text(result.messages.sha256);
+            let newWin = window.open(result.files.url);
+            $('#md5_files').text(result.files.md5);
+            $('#sha_files').text(result.files.sha256);
             if(!newWin || newWin.closed || typeof newWin.closed=='undefined')
             {
                 alert("Consenti i popup dal tuo browser.");
             }
-            if(result.users_in_groups != null) {
-                window.open(result.users_in_groups.url);
-                $('#md5_usr').text(result.users_in_groups.md5);
-                $('#sha_usr').text(result.users_in_groups.sha256);
-            }
             $('#modalHash').modal('show').on('hide.bs.modal', function () {
-                if ($('input[name="Media"]:checked').val() === '1') {
+                if ($('#media').prop('checked')) {
                     $('#modalLoading').modal('show');
                     $('#modalTitle').text('Creazione della cartella contenente i media...');
                     $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                    setTimeout(checkMediaDownloadStatus.bind(null, result[2], result[1]), 1000);
+                    setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name), 1000);
                 } else
                     $('#modalLoading').modal('hide');
             });
@@ -291,7 +286,13 @@ checkMediaDownloadStatus = (media_num, zipName) => {
             if (status) {
                 $("#modalLoading").modal('hide');
                 $('#modalStripe').removeClass('bg-warning');
-                window.location.href = './tmp/' + zipName;
+                let newWin = window.open(result.url);
+                $('#md5_medias').text(result.md5);
+                $('#sha_medias').text(result.sha256);
+                if(!newWin || newWin.closed || typeof newWin.closed=='undefined')
+                {
+                    alert("Consenti i popup dal tuo browser.");
+                }
             } else {
                 setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
             }

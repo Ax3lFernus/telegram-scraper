@@ -154,18 +154,18 @@ require 'layouts/head.php';
                 <table class="table">
                     <tr>
                         <td scope="col"><b>Hash</b></td>
-                        <td scope="col"><b>Messaggi</b></td>
-                        <td scope="col"><b>Lista utenti</b></td>
+                        <td scope="col"><b>Files</b></td>
+                        <td scope="col"><b>Medias</b></td>
                     </tr>
                     <tr>
                         <td><b>MD5</b></td>
-                        <td><p id="md5_msg" class="text-break">Non richiesto</p></td>
-                        <td><p id="md5_usr" class="text-break">Non richiesto</p></td>
+                        <td><p id="md5_files" class="text-break">Non richiesto</p></td>
+                        <td><p id="md5_medias" class="text-break">Non richiesto</p></td>
                     </tr>
                     <tr>
                         <td><b>SHA256</b></td>
-                        <td><p id="sha_msg" class="text-break">Non richiesto</p></td>
-                        <td><p id="sha_usr" class="text-break">Non richiesto</p></td>
+                        <td><p id="sha_files" class="text-break">Non richiesto</p></td>
+                        <td><p id="sha_medias" class="text-break">Non richiesto</p></td>
                     </tr>
                 </table>
             </div>
