@@ -6,7 +6,7 @@ $htmlReportPage = '
             <img src="' . dirname(__DIR__, 1) . '/assets/images/logo.png" alt="Telegram Scraper Logo" width="50"/>
         </td>
         <td style="width: 50%;" align="right">
-            <h3>Telegram Scraper v1.1.0</h3>
+            <h3>Telegram Scraper v' . $telegramScraperVersion . '</h3>
             <p style="font-size: small;">
                 Sorgente:
                 <a href="https://github.com/ax3lfernus/telegram-scraper" style="margin-bottom: 5px;">https://github.com/ax3lfernus/telegram-scraper</a><br/>

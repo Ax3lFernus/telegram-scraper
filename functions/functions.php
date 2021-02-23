@@ -12,8 +12,7 @@ $mimes = new Mimey\MimeTypes;
 $html2pdf = new Html2Pdf('P', 'A4', 'it');
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
-$appLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'], 1);
+$telegramScraperVersion = \Composer\InstalledVersions::getPrettyVersion('ax3lfernus/telegramscraper');
 
 function generateRandomString($length = 10)
 {
