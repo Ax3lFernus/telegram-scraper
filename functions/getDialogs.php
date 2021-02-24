@@ -7,7 +7,7 @@ if (isset($_COOKIE['token'])) {
         foreach ($chats->response as $id => $chat) {
             $info = getPeerInfo($id);
             if ($info == null) continue;
-            array_push($chat_list, ['name' => $info['name'], 'peerID' => $id, 'peerType' => $info['type']]);
+            array_push($chat_list, ['name' => $info['name'], 'type' => $info['type'], 'id' => $id, 'peer' => json_decode(json_encode($chat->peer), true)]);
         }
         $chat_list = array_reverse($chat_list);
     }
