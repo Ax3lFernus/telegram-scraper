@@ -104,6 +104,16 @@ require 'layouts/head.php';
             <div class="col"></div>
             <div class="col-3">
                 <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="profile_pic">
+                    <label class="form-check-label" for="profile_pic">Scaricare le immagini del profilo</label>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col-3">
+                <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="media">
                     <label class="form-check-label" for="media">Includere i media</label>
                 </div>
