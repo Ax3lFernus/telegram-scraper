@@ -11,10 +11,9 @@ if (isset($_COOKIE['token']) && isset($_GET['peerIdType']) && isset($_GET['peerT
         $media_info = json_decode(json_encode($media_info), true);
         $media_info['InputFileLocation']['peer'] = array('_' => $_GET['peerType'], $_GET['peerIdType'] => $_GET['peerId']);
         $pictureInfo = json_encode(['media' => $media_info]);
-        //$picture = curlPOST($baseUrl . 'api/users/' . $token . '/downloadToResponse', $pictureInfo);
-        //header("Content-Type: image/jpeg");
-        //echo $picture;
-        echo json_encode($pictureInfo);
+        $picture = curlPOST($baseUrl . 'api/users/' . $token . '/downloadToResponse', $pictureInfo);
+        header("Content-Type: image/jpeg");
+        echo $picture;
     } else {
         header("Content-Type: image/png");
         $filename = dirname(__DIR__, 1) . '/assets/images/default_user.png';

@@ -59,7 +59,7 @@ require 'layouts/head.php';
                     <?php
                     for ($i = 0; $i < count($chat_list); $i++) {
                         echo ' <tr>
-                                <td><img src="./functions/profilePicture.php?peerType=' . $chat_list[$i]['peer']['_'] . '&peerIdType=' . array_keys($chat_list[$i]['peer'])[1] .'&peerId='. $chat_list[$i]['peer'][array_keys($chat_list[$i]['peer'])[1]] . '" /*onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';"*/ style="border-radius: 50%" width="30px" height="30px"></td>
+                                <td><img src="./functions/profilePicture.php?peerType=' . $chat_list[$i]['peer']['_'] . '&peerIdType=' . array_keys($chat_list[$i]['peer'])[1] .'&peerId='. $chat_list[$i]['peer'][array_keys($chat_list[$i]['peer'])[1]] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
                                 <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
                                 <td><input type="checkbox" name="user"></td>
                                 <input type="hidden" value="' . $chat_list[$i]['id'] . '" name="chatID"><input type="hidden" value="' . htmlspecialchars($chat_list[$i]['name']) . '" name="chatName"><input type="hidden" value="' . $chat_list[$i]['type'] . '" name="chatType">
