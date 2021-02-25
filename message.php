@@ -23,7 +23,7 @@ require 'layouts/head.php';
     <fieldset class="border mt-3 p-2">
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
-            <div class="col-4 form-check form-switch ps-5">
+            <div class="col-4 form-check form-switch ps-5" style="padding-right: 200px;">
                     <input class="form-check-input" type="checkbox" id="check_all_chats">
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
             </div>

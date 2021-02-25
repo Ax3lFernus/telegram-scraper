@@ -27,7 +27,7 @@ $("#logout").on('click', _ => {
 $('#checkboxlist').find('input:checkbox').on('click', function () {
     var showAll = true;
     $("#chat_list tr").hide();
-    $('input:checkbox:checked').each(function() {
+    $('#checkboxlist').find('input:checkbox:checked').each(function() {
         showAll = false;
         var status = $(this).attr('rel');
         $("#chat_list tr").filter(function () {
@@ -43,14 +43,11 @@ $('#checkboxlist').find('input:checkbox').on('click', function () {
 });
 
 $("#check_all_chats").click(function () {
-   // $("input[type=checkbox][name='user']").not(this).prop('checked', $(this).prop('checked'));
-    $("input[type=checkbox][name='user']").parent().parent().filter(function(){
-        if($(this).css('display') !== 'none')
-            $(this).find("input[type=checkbox][name='user']").prop('checked', $("#check_all_chats").prop('checked'));
-    });
+    $("input[type=checkbox][name='user']").not(this).prop('checked', $(this).prop('checked'));
+
 });
 
-$("input[type=checkbox]").click(() => {
+$("input[type=checkbox][name='user']").click(() => {
     if ($("input[name='user']:checked").length === $("input[name='user']").length)
         $("#check_all_chats").prop('checked', true);
     else
