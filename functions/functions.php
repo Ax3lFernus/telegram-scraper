@@ -1,5 +1,6 @@
 <?php
 error_reporting(0);
+date_default_timezone_set('Europe/Rome');
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
@@ -13,6 +14,7 @@ $html2pdf = new Html2Pdf('P', 'A4', 'it');
 
 $baseUrl = rtrim($_ENV['TELEGRAM_API_SERVER_BASE_URL'], '/') . '/';
 $telegramScraperVersion = \Composer\InstalledVersions::getPrettyVersion('ax3lfernus/telegramscraper');
+$serverLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]".dirname($_SERVER['PHP_SELF']);
 
 function generateRandomString($length = 10)
 {
@@ -146,4 +148,11 @@ function delete_directory($dirname)
     closedir($dir_handle);
     rmdir($dirname);
     return true;
+}
+
+function create_folder($folderName){
+    if (file_exists($folderName)) {
+        delete_directory($folderName);
+    }
+    mkdir($folderName, 0777, true);
 }

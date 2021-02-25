@@ -184,6 +184,7 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
             chats: chats,
             media: $('#media').prop('checked'),
             users_groups: $('#user_list').prop('checked'),
+            profile_photos: $('#profile_pic').prop('checked'),
             filetype: type == 'json' ? 0 : 1,
             dataInizio: $('input[name="dataInizio"]').val(),
             dataFine: $('input[name="dataFine"]').val()
@@ -195,10 +196,10 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
             $('#md5_files').text(result.files.md5);
             $('#sha_files').text(result.files.sha256);
             if ($('#media').prop('checked')) {
-                if(result.media.num_media > 0) {
+                if (result.media.num_media > 0) {
                     $('#md5_medias').text('Download in corso...');
                     $('#sha_medias').text('Download in corso...');
-                }else{
+                } else {
                     $('#md5_medias').text('Nessun media rilevato');
                     $('#sha_medias').text('Nessun media rilevato');
                 }
@@ -231,53 +232,18 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
     });
 }
 
-getCSVFromArray = (array) => {
-    let dataString, csvContent = "";
-    csvContent = array[0] + "\n";
-    array.shift();
-    array.forEach((element) => {
-        dataString = element[0] + ',"' + element[1] + '","' + element[2] + '",' + element[3] + ',"' + element[4].replace(/\n/g, '","') + '",' + element[5] + "\n";
-        csvContent += dataString;
-    });
-    let downloadLink = document.createElement("a");
-    let date = new Date($.now());
-    downloadLink.setAttribute("href", URL.createObjectURL(new Blob(["\ufeff", csvContent])));
-    downloadLink.setAttribute("download", date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + ".csv");
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    downloadLink.remove();
-}
-
-getJSONFromArray = (array) => {
-    let jsonObj = [];
-    array.shift();
-    array.forEach((element) => {
-        jsonObj.push({
-            "chat_id": element[0],
-            "chat_name": element[1],
-            "author": element[2],
-            "date": element[3],
-            "message": element[4].replace(/\n/g, "\\n"),
-            "media_name": element[5]
-        });
-    });
-    let json = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonObj));
-    let downloadLink = document.createElement('a');
-    let date = new Date($.now());
-    downloadLink.setAttribute("href", json);
-    downloadLink.setAttribute("download", date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + ".json");
-    document.body.appendChild(downloadLink); // required for firefox
-    downloadLink.click();
-    downloadLink.remove();
-}
-
 getCheckedChats = () => {
     let chats = [];
     $('input[name="user"]:checked').each(function () {
         chats.push({
             "id": $(this).parent().parent().find("input[type='hidden'][name='chatID']").val(),
             "name": $(this).parent().parent().find("input[type='hidden'][name='chatName']").val(),
-            "type": $(this).parent().parent().find("input[type='hidden'][name='chatType']").val()
+            "type": $(this).parent().parent().find("input[type='hidden'][name='chatType']").val(),
+            "peer": {
+                "peerType": $(this).parent().parent().find("input[type='hidden'][name='peerType']").val(),
+                "peerIdType": $(this).parent().parent().find("input[type='hidden'][name='peerIdType']").val(),
+                "peerId": $(this).parent().parent().find("input[type='hidden'][name='peerId']").val()
+            }
         });
     });
     return chats;

@@ -28,13 +28,13 @@ $htmlReportPage = '
                 <li>Username: ' . (isset($self->response->username) ? '@' . $self->response->username : ' ') . '</li>
                 <li>Nome: ' . (isset($self->response->first_name) ? $self->response->first_name : ' ') . '</li>
                 <li>Cognome: ' . (isset($self->response->last_name) ? $self->response->last_name : ' ') . '</li>
-                <li>Ultimo accesso: ' . (isset($self->response->status->was_online) ? date("d-m-Y h:i:s", $self->response->status->was_online) : 'N.D.') . '</li>
+                <li>Ultimo accesso: ' . (isset($self->response->status->was_online) ? date("d-m-Y H:i:s", $self->response->status->was_online) . ' CET' : 'N.D.') . '</li>
             </ul>
         </td>
         <td style="width: 50%" align="right">
-            <strong>Dati richiesti il:</strong> ' . $request_date .' UTC
+            <strong>Dati richiesti il:</strong> ' . $request_date .' CET
             <br/>
-            <strong>Recupero messaggi terminato il:</strong> ' . date("d-m-Y h:i:s") .' UTC
+            <strong>Download terminato il:</strong> ' . date("d-m-Y H:i:s") .' CET
             <br/>
             <strong>Totale messaggi scaricati: </strong> '. count($messages) .'
             <br/>

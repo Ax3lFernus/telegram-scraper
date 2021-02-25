@@ -23,8 +23,8 @@ require 'layouts/head.php';
         <legend>Seleziona le chat</legend>
         <div class="row mt-3">
             <div class="col-4 form-check form-switch ps-5">
-                    <input class="form-check-input" type="checkbox" id="check_all_chats">
-                    <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
+                <input class="form-check-input" type="checkbox" id="check_all_chats">
+                <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
             </div>
             <div class="col-5" style="margin: auto 0">
                 <div class="row mx-5">
@@ -59,10 +59,13 @@ require 'layouts/head.php';
                     <?php
                     for ($i = 0; $i < count($chat_list); $i++) {
                         echo ' <tr>
-                                <td><img src="./functions/profilePicture.php?peerType=' . $chat_list[$i]['peer']['_'] . '&peerIdType=' . array_keys($chat_list[$i]['peer'])[1] .'&peerId='. $chat_list[$i]['peer'][array_keys($chat_list[$i]['peer'])[1]] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
+                                <td><img name="img" src="./functions/profilePicture.php?peerType=' . $chat_list[$i]['peer']['_'] . '&peerIdType=' . array_keys($chat_list[$i]['peer'])[1] . '&peerId=' . $chat_list[$i]['peer'][array_keys($chat_list[$i]['peer'])[1]] . '" onerror="this.onerror=null;this.src=\'./assets/images/default_user.png\';" style="border-radius: 50%" width="30px" height="30px"></td>
                                 <td> <p>' . $chat_list[$i]['name'] . ' </p></td>
                                 <td><input type="checkbox" name="user"></td>
                                 <input type="hidden" value="' . $chat_list[$i]['id'] . '" name="chatID"><input type="hidden" value="' . htmlspecialchars($chat_list[$i]['name']) . '" name="chatName"><input type="hidden" value="' . $chat_list[$i]['type'] . '" name="chatType">
+                                <input type="hidden" value="' . $chat_list[$i]['peer']['_'] . '" name="peerType">
+                                <input type="hidden" value="' . array_keys($chat_list[$i]['peer'])[1] . '" name="peerIdType">
+                                <input type="hidden" value="' . $chat_list[$i]['peer'][array_keys($chat_list[$i]['peer'])[1]] . '" name="peerId">
                               </tr>';
                     }
                     ?>
@@ -75,18 +78,18 @@ require 'layouts/head.php';
         <legend>Imposta i parametri</legend>
         <div class="row mt-4">
             <div class="col"><label for="dataInizio">Data inizio:</label> <input id="dataInizio" name="dataInizio"
-                                                                                      type="date"
-                                                                                      value='2013-08-14'
-                                                                                      min='2013-08-14'
-                                                                                      class="form-control"
-                                                                                      max="<?php echo date('Y-m-d'); ?>">
+                                                                                 type="date"
+                                                                                 value='2013-08-14'
+                                                                                 min='2013-08-14'
+                                                                                 class="form-control"
+                                                                                 max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
             <div class="col"><label for="dataFine">Data fine:</label> <input id="dataFine" name="dataFine"
-                                                                                  type="date"
-                                                                                  value= <?php echo date('Y-m-d'); ?> min='2013-08-14'
-                                                                                  class="form-control"
-                                                                                  max="<?php echo date('Y-m-d'); ?>">
+                                                                             type="date"
+                                                                             value= <?php echo date('Y-m-d'); ?> min='2013-08-14'
+                                                                             class="form-control"
+                                                                             max="<?php echo date('Y-m-d'); ?>">
                 <div class="invalid-feedback">Inserisci una data inizio minore della data fine</div>
             </div>
         </div>
