@@ -4,6 +4,7 @@ require __DIR__ . '/functions/getDialogs.php';
 $style = "<link href=\"assets/css/message.css\" rel=\"stylesheet\">";
 $page_title = "Messaggi";
 require 'layouts/head.php';
+
 ?>
 
 <body class="text-center">
@@ -27,17 +28,17 @@ require 'layouts/head.php';
                     <label class="form-check-label" for="check_all_chats">Seleziona tutte le chat</label>
             </div>
             <div class="col-5" style="margin: auto 0">
-                <div class="row mx-5">
+                <div class="row mx-5" id="checkboxlist">
                     <div class="col">
-                        <input type="checkbox" id="select_all_chat_user" name="select_all_chat_user">
+                        <input rel="user" type="checkbox" id="select_all_chat_user" name="select_all_chat_user">
                         <label class="form-check-label" for="select_all_chat_user">Utenti</label>
                     </div>
                     <div class="col">
-                        <input type="checkbox" id="select_all_chat_channel" name="select_all_chat_channel">
+                        <input rel="channel" type="checkbox" id="select_all_chat_channel" name="select_all_chat_channel">
                         <label class="form-check-label" for="select_all_chat_channel">Canali</label>
                     </div>
                     <div class="col">
-                        <input type="checkbox" id="select_all_chat_groups" name="select_all_chat_groups">
+                        <input rel="chat" type="checkbox" id="select_all_chat_groups" name="select_all_chat_groups">
                         <label class="form-check-label" for="select_all_chat_groups">Gruppi</label>
                     </div>
                 </div>
@@ -47,7 +48,7 @@ require 'layouts/head.php';
         </div>
         <div class="row mt-3" style="height: 300px;overflow: auto;">
             <div class="col tableFixHead">
-                <table class="table table-striped">
+                <table id="idTable" class="table table-striped">
                     <thead>
                     <tr>
                         <th scope="col">Immagine profilo</th>
