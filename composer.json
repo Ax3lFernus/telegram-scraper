@@ -7,7 +7,8 @@
         "vlucas/phpdotenv": "^5.3",
         "ralouphie/mimey": "^2.1",
         "dompdf/dompdf": "^1.0",
-        "spipu/html2pdf": "^5.2"
+        "spipu/html2pdf": "^5.2",
+        "composer-runtime-api": "^2.0"
     },
     "license": "AGPL-3.0-only",
     "authors": [

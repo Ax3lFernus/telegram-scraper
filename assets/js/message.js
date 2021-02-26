@@ -24,56 +24,30 @@ $("#logout").on('click', _ => {
     });
 });
 
+$('#checkboxlist').find('input:checkbox').on('click', function () {
+    var showAll = true;
+    $("#chat_list tr").hide();
+    $('#checkboxlist').find('input:checkbox:checked').each(function() {
+        showAll = false;
+        var status = $(this).attr('rel');
+        $("#chat_list tr").filter(function () {
+            if($(this).find("input[type='hidden'][name='chatType']").val() === status)
+            {
+                $(this).show();
+            }
+        });
+    });
+    if (showAll) {
+        $("#chat_list tr").show();
+    }
+});
 
 $("#check_all_chats").click(function () {
     $("input[type=checkbox][name='user']").not(this).prop('checked', $(this).prop('checked'));
-});
-
-$("#select_all_chat_user").click(function () {
-    $("#select_all_chat_channel").prop('checked', false);
-    $("#select_all_chat_groups").prop('checked', false);
-    if ($("#select_all_chat_user").is(":checked")) {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "user");
-        });
-    } else {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
-        });
-    }
 
 });
 
-$("#select_all_chat_channel").click(function () {
-    $("#select_all_chat_user").prop('checked', false);
-    $("#select_all_chat_groups").prop('checked', false);
-    if ($("#select_all_chat_channel").is(":checked")) {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "channel");
-        });
-    } else {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
-        });
-    }
-
-});
-
-$("#select_all_chat_groups").click(function () {
-    $("#select_all_chat_channel").prop('checked', false);
-    $("#select_all_chat_user").prop('checked', false);
-    if ($("#select_all_chat_groups").is(":checked")) {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() === "chat");
-        });
-    } else {
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).find("input[type='hidden'][name='chatType']").val() > "");
-        });
-    }
-});
-
-$("input[type=checkbox]").click(() => {
+$("input[type=checkbox][name='user']").click(() => {
     if ($("input[name='user']:checked").length === $("input[name='user']").length)
         $("#check_all_chats").prop('checked', true);
     else
@@ -279,3 +253,4 @@ checkMediaDownloadStatus = (media_num, zipName) => {
         }
     });
 }
+

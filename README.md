@@ -6,6 +6,8 @@ Un semplice Scraper di Telegram scritto in PHP e completamente Web!
 1. `PHP 7.4.x`
     * Modifiche al file `php.ini`:
         * Valore di `max_execution_time` impostato a `0`
+        * Estensione `curl`
+        * Estensione `gd2`
         * Estensione `mbstring`
         * Estensione `openssl`
 2. `xtrime-ru/TelegramApiServer` [-> Installazione](https://github.com/xtrime-ru/TelegramApiServer/blob/master/README.md#installation)
