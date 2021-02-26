@@ -19,14 +19,15 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $zipName = generateRandomString(15);
     $media_id = 0;
     $request_date = gmdate("d-m-Y H:i:s");
+    $request_date_underscore = gmdate("d-m-Y_H-i-s");
 
     $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
     $filesDir = $tmpDir . '/files';
-    $photoDir = $tmpDir . '/profile_photos';
+    $photoDir = $filesDir . '/profile_photos';
 
     create_folder($tmpDir);
     create_folder($filesDir);
-    if($getProfilePhotos)
+    if ($getProfilePhotos)
         create_folder($photoDir);
 
     foreach ($chats as $chat) {
@@ -74,7 +75,6 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                         if (!isset($users_info[$msg->from_id->user_id])) {
                             $info = getPeerInfo($msg->from_id->user_id);
                             $users_info[$msg->from_id->user_id] = ($info == null) ? 'no_name' : $info['name'];
-                            sleep(1);
                         }
                         $author = $users_info[$msg->from_id->user_id];
                     } else {
@@ -89,13 +89,13 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     }
     if ($filetype) {
         //CSV
-        $messages_csv = fopen($filesDir . '/messages.csv', 'w');
+        $messages_csv = fopen($filesDir . '/messages_' . $request_date_underscore . '.csv', 'w');
         foreach ($messages as $fields) {
             fputcsv($messages_csv, $fields);
         }
         fclose($messages_csv);
         if ($getUsersInGroups) {
-            $users_in_groups_csv = fopen($filesDir . '/users_in_groups.csv', 'w');
+            $users_in_groups_csv = fopen($filesDir . '/users_in_groups_' . $request_date_underscore . '.csv', 'w');
             foreach ($users_in_groups as $fields) {
                 fputcsv($users_in_groups_csv, $fields);
             }
@@ -108,40 +108,49 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
         foreach ($messages as $fields) {
             array_push($json_msg, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'author' => $fields[2], 'timestamp' => $fields[3], 'date' => gmdate("d-m-Y H:i:s", $fields[3]), 'message' => $fields[4], 'media_name' => $fields[5]]);
         }
-        file_put_contents($filesDir . '/messages.json', json_encode($json_msg));
+        file_put_contents($filesDir . '/messages_' . $request_date_underscore . '.json', json_encode($json_msg));
         if ($getUsersInGroups) {
             $json_usr = [];
             array_shift($users_in_groups);
             foreach ($users_in_groups as $fields) {
                 array_push($json_usr, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'chat_type' => $fields[2], 'user_id' => $fields[3], 'first_name' => $fields[4], 'last_name' => $fields[5], 'username' => $fields[6], 'join_timestamp' => $fields[7], 'join_date' => gmdate("d-m-Y H:i:s", $fields[7]), 'role' => $fields[8]]);
             }
-            file_put_contents($filesDir . '/users_in_groups.json', json_encode($json_usr));
+            file_put_contents($filesDir . '/users_in_groups_' . $request_date_underscore . '.json', json_encode($json_usr));
         }
     }
 
-    require __DIR__ . '/getReport.php';
-
-    zipFolder($filesDir, $zipName . '_files');
-    if (file_exists($filesDir)) {
-        delete_directory($filesDir);
-    }
-
-    echo json_encode(['files' => ['url' => './tmp/' . $token . '/' . $zipName . '_files.zip',
-        'md5' => hash_file('md5', $tmpDir . '/' . $zipName . '_files.zip'),
-        'sha256' => hash_file('sha256', $tmpDir . '/' . $zipName . '_files.zip')],
-        'media' => $getMedia ? ['zip_name' => $zipName . '_medias.zip', 'num_media' => $media_id] : null]);
-
-    $size = ob_get_length();
-    header('Content-Type: application/json');
-    header("Content-Encoding: none");
-    header("Content-Length: {$size}");
-    header("Connection: close");
-    ob_end_flush();
-    ob_flush();
-    flush();
     if ($getMedia && count($media) > 0) {
+        echo json_encode(['report' => ['url' => './tmp/report_' . $request_date_underscore . '.pdf'],
+            'media' => ['zip_name' => $zipName . '_medias.zip', 'num_media' => $media_id]]);
+        $size = ob_get_length();
+        header('Content-Type: application/json');
+        header("Content-Encoding: none");
+        header("Content-Length: {$size}");
+        header("Connection: close");
+        ob_end_flush();
+        ob_flush();
+        flush();
         require __DIR__ . '/downloadMedia.php';
-    } else die();
+        die();
+    } else {
+        zipFolder($filesDir, $zipName . '_' . $request_date_underscore);
+        if (file_exists($filesDir)) {
+            delete_directory($filesDir);
+        }
+        require __DIR__ . '/getReport.php';
+        echo json_encode(['report' => ['url' => './tmp/report_' . $request_date_underscore . '.pdf',
+            'md5' => hash_file('md5', './tmp/report_' . $request_date_underscore . '.pdf'),
+            'sha256' => hash_file('sha256', './tmp/report_' . $request_date_underscore . '.pdf')],
+            'media' => false]);
+        $size = ob_get_length();
+        header('Content-Type: application/json');
+        header("Content-Encoding: none");
+        header("Content-Length: {$size}");
+        header("Connection: close");
+        ob_end_flush();
+        ob_flush();
+        flush();
+    }
 } else {
     http_response_code(500);
     die();

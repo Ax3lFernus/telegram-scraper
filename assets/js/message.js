@@ -189,36 +189,40 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         },
         timeout: 0,
         success: (result) => {
-            $('#modalLoading').modal('hide');
-            let newWin = window.open(result.files.url);
-            $('#md5_files').text(result.files.md5);
-            $('#sha_files').text(result.files.sha256);
-            if ($('#media').prop('checked')) {
-                if (result.media.num_media > 0) {
-                    $('#md5_medias').text('Download in corso...');
-                    $('#sha_medias').text('Download in corso...');
-                } else {
-                    $('#md5_medias').text('Nessun media rilevato');
-                    $('#sha_medias').text('Nessun media rilevato');
-                }
-            }
-            if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
-                alert("Consenti i popup dal tuo browser.");
-            }
-            $('#modalHash').modal('show').on('hide.bs.modal', function () {
+            if(result.media != false){
+                $('#modalLoading').modal('hide');
+                let newWin = window.open(result.files.url);
+                $('#md5_files').text(result.files.md5);
+                $('#sha_files').text(result.files.sha256);
                 if ($('#media').prop('checked')) {
                     if (result.media.num_media > 0) {
                         $('#md5_medias').text('Download in corso...');
                         $('#sha_medias').text('Download in corso...');
-                        $('#modalLoading').modal('show');
-                        $('#modalTitle').text('Creazione della cartella contenente i media...');
-                        $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                        setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name), 1000);
+                    } else {
+                        $('#md5_medias').text('Nessun media rilevato');
+                        $('#sha_medias').text('Nessun media rilevato');
+                    }
+                }
+                if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                    alert("Consenti i popup dal tuo browser.");
+                }
+                $('#modalHash').modal('show').on('hide.bs.modal', function () {
+                    if ($('#media').prop('checked')) {
+                        if (result.media.num_media > 0) {
+                            $('#md5_medias').text('Download in corso...');
+                            $('#sha_medias').text('Download in corso...');
+                            $('#modalLoading').modal('show');
+                            $('#modalTitle').text('Creazione della cartella contenente i media...');
+                            $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
+                            setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name), 1000);
+                        } else
+                            $('#modalLoading').modal('hide');
                     } else
                         $('#modalLoading').modal('hide');
-                } else
-                    $('#modalLoading').modal('hide');
-            });
+                });
+            }else{
+
+            }
         },
         error: (e) => {
             $('#modalLoading').modal('hide');
