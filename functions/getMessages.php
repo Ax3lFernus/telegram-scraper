@@ -18,7 +18,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     $filetype = $_POST['filetype'] == 0 ? false : true;
     $zipName = generateRandomString(15);
     $media_id = 0;
-    $request_date = date("d-m-Y H:i:s");
+    $request_date = gmdate("d-m-Y H:i:s");
 
     $tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token;
     $filesDir = $tmpDir . '/files';
@@ -53,7 +53,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                     $last_name = isset($participant->user->last_name) ? $participant->user->last_name : '';
                     $username = isset($participant->user->username) ? $participant->user->username : '';
                     $date = isset($participant->date) ? $participant->date : 0;
-                    array_push($users_in_groups, [$chat_info->response->id, $chat_info->response->title, $chat_info->response->type, $participant->user->id, $first_name, $last_name, $username, $date, date('d-m-Y H:i:s', $date), $participant->role]);
+                    array_push($users_in_groups, [$chat_info->response->id, $chat_info->response->title, $chat_info->response->type, $participant->user->id, $first_name, $last_name, $username, $date, gmdate("d-m-Y H:i:s", $date), $participant->role]);
                 }
             }
         }
@@ -80,7 +80,7 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
                     } else {
                         $author = $chat['name'];
                     }
-                    array_push($messages, [$chat['id'], $chat['name'], $author, $msg->date, date('d-m-Y H:i:s', $msg->date), str_replace(array("\n", "\r"), '<br/>', $msg->message), (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
+                    array_push($messages, [$chat['id'], $chat['name'], $author, $msg->date, gmdate("d-m-Y H:i:s", $msg->date), str_replace(array("\n", "\r"), '<br/>', $msg->message), (isset($msg->media) && $getMedia) ? $media_id : (isset($msg->media) ? 'true' : 'false')]);
                 }
             }
             $offset_msg_id = end($chat_messages->response->messages)->id;
@@ -106,14 +106,14 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
         $json_msg = [];
         array_shift($messages);
         foreach ($messages as $fields) {
-            array_push($json_msg, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'author' => $fields[2], 'timestamp' => $fields[3], 'date' => date('d-m-Y H:i:s', $fields[3]), 'message' => $fields[4], 'media_name' => $fields[5]]);
+            array_push($json_msg, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'author' => $fields[2], 'timestamp' => $fields[3], 'date' => gmdate("d-m-Y H:i:s", $fields[3]), 'message' => $fields[4], 'media_name' => $fields[5]]);
         }
         file_put_contents($filesDir . '/messages.json', json_encode($json_msg));
         if ($getUsersInGroups) {
             $json_usr = [];
             array_shift($users_in_groups);
             foreach ($users_in_groups as $fields) {
-                array_push($json_usr, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'chat_type' => $fields[2], 'user_id' => $fields[3], 'first_name' => $fields[4], 'last_name' => $fields[5], 'username' => $fields[6], 'join_timestamp' => $fields[7], 'join_date' => date('d-m-Y H:i:s', $fields[7]), 'role' => $fields[8]]);
+                array_push($json_usr, ['chat_id' => $fields[0], 'chat_name' => $fields[1], 'chat_type' => $fields[2], 'user_id' => $fields[3], 'first_name' => $fields[4], 'last_name' => $fields[5], 'username' => $fields[6], 'join_timestamp' => $fields[7], 'join_date' => gmdate("d-m-Y H:i:s", $fields[7]), 'role' => $fields[8]]);
             }
             file_put_contents($filesDir . '/users_in_groups.json', json_encode($json_usr));
         }
