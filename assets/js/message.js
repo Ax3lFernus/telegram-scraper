@@ -142,9 +142,25 @@ $(document).ready(function () {
 
     $("#search").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#chat_list tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        var showAll = true;
+        $("#chat_list tr").hide();
+        $('#checkboxlist').find('input:checkbox:checked').each(function() {
+            showAll = false;
+            var status = $(this).attr('rel');
+            $("#chat_list tr").filter(function () {
+                if($(this).find("input[type='hidden'][name='chatType']").val() === status)
+                {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                }
+            });
         });
+        if (showAll) {
+            $("#chat_list tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        }
+
+
     });
 });
 
