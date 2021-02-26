@@ -120,8 +120,9 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
     }
 
     if ($getMedia && count($media) > 0) {
-        echo json_encode(['report' => ['url' => './tmp/report_' . $request_date_underscore . '.pdf'],
-            'media' => ['zip_name' => $zipName . '_medias.zip', 'num_media' => $media_id]]);
+        echo json_encode(['report' => ['url' => './tmp/' . $token . '/report_' . $request_date_underscore . '.pdf',
+            'name' => 'report_' . $request_date_underscore . '.pdf'],
+            'media' => ['zip_name' => $zipName . '_' . $request_date_underscore . '.zip', 'num_media' => $media_id]]);
         $size = ob_get_length();
         header('Content-Type: application/json');
         header("Content-Encoding: none");
@@ -138,10 +139,10 @@ if (isset($_COOKIE['token']) && isset($_POST['chats']) && isset($_POST['media'])
             delete_directory($filesDir);
         }
         require __DIR__ . '/getReport.php';
-        echo json_encode(['report' => ['url' => './tmp/report_' . $request_date_underscore . '.pdf',
-            'md5' => hash_file('md5', './tmp/report_' . $request_date_underscore . '.pdf'),
-            'sha256' => hash_file('sha256', './tmp/report_' . $request_date_underscore . '.pdf')],
-            'media' => false]);
+        echo json_encode(['report' => ['url' => './tmp/' . $token . '/report_' . $request_date_underscore . '.pdf',
+            'md5' => hash_file('md5', $tmpDir . '/report_' . $request_date_underscore .'.pdf'),
+            'sha256' => hash_file('sha256', $tmpDir . '/report_' . $request_date_underscore .'.pdf')],
+            'zip' => './tmp/' . $token . '/' . $zipName . '_' . $request_date_underscore . '.zip']);
         $size = ob_get_length();
         header('Content-Type: application/json');
         header("Content-Encoding: none");

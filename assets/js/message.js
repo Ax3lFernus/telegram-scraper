@@ -181,39 +181,22 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         },
         timeout: 0,
         success: (result) => {
-            if(result.media != false){
+            if(!$('#media').prop('checked')){
                 $('#modalLoading').modal('hide');
-                let newWin = window.open(result.files.url);
-                $('#md5_files').text(result.files.md5);
-                $('#sha_files').text(result.files.sha256);
-                if ($('#media').prop('checked')) {
-                    if (result.media.num_media > 0) {
-                        $('#md5_medias').text('Download in corso...');
-                        $('#sha_medias').text('Download in corso...');
-                    } else {
-                        $('#md5_medias').text('Nessun media rilevato');
-                        $('#sha_medias').text('Nessun media rilevato');
-                    }
-                }
+                let newWin = window.open(result.report.url);
+                $('#md5_files').text(result.report.md5);
+                $('#sha_files').text(result.report.sha256);
+                window.open(result.zip);
                 if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
                     alert("Consenti i popup dal tuo browser.");
                 }
                 $('#modalHash').modal('show').on('hide.bs.modal', function () {
-                    if ($('#media').prop('checked')) {
-                        if (result.media.num_media > 0) {
-                            $('#md5_medias').text('Download in corso...');
-                            $('#sha_medias').text('Download in corso...');
-                            $('#modalLoading').modal('show');
-                            $('#modalTitle').text('Creazione della cartella contenente i media...');
-                            $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
-                            setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name), 1000);
-                        } else
-                            $('#modalLoading').modal('hide');
-                    } else
-                        $('#modalLoading').modal('hide');
+                    $('#modalLoading').modal('hide');
                 });
             }else{
-
+                $('#modalTitle').text('Creazione della cartella contenente i media...');
+                $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
+                setTimeout(checkMediaDownloadStatus.bind(null, result.media.num_media, result.media.zip_name, result.report.url, result.report.name), 1000);
             }
         },
         error: (e) => {
@@ -243,9 +226,9 @@ getCheckedChats = () => {
     return chats;
 }
 
-checkMediaDownloadStatus = (media_num, zipName) => {
+checkMediaDownloadStatus = (media_num, zipName, reportUrl, reportName) => {
     $.ajax({
-        url: './functions/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName,
+        url: './functions/downloadMediaStatus.php?media_num=' + media_num + '&zip_name=' + zipName + '&report_name=' + reportName,
         type: 'GET',
         timeout: 2000,
         success: (result) => {
@@ -258,18 +241,19 @@ checkMediaDownloadStatus = (media_num, zipName) => {
                 $("#modalLoading").modal('hide');
                 $('#modalStripe').removeClass('bg-warning');
                 let newWin = window.open(result.url);
-                $('#md5_medias').text(result.md5);
-                $('#sha_medias').text(result.sha256);
+                window.open(reportUrl);
+                $('#md5_files').text(result.md5);
+                $('#sha_files').text(result.sha256);
                 if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
                     alert("Consenti i popup dal tuo browser.");
                 }
                 $('#modalHash').modal('show').off('hide.bs.modal');
             } else {
-                setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
+                setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName, reportUrl, reportName), 5000);
             }
         },
         error: function (code, textStatus, errorThrown) {
-            setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName), 5000);
+            setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName, reportUrl, reportName), 5000);
         }
     });
 }

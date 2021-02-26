@@ -1,6 +1,5 @@
 <?php
 error_reporting(0);
-date_default_timezone_set('Europe/Rome');
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
