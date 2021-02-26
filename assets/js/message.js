@@ -66,10 +66,10 @@ $("input[type=checkbox][name='user']").click(() => {
 $("#csv").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
         if (getCheckedChats().length > 0) {
-            $('#md5_files').text('Non richiesto');
-            $('#sha_files').text('Non richiesto');
-            $('#md5_medias').text('Non richiesto');
-            $('#sha_medias').text('Non richiesto');
+            $('#md5_files').text('Errore');
+            $('#sha_files').text('Errore');
+            $('#report_url').prop('href', '').text('');
+            $('#zip_url').prop('href', '').text('');
             $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
             $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
             $('#modalTitle').text('Creazione file csv in corso...');
@@ -87,10 +87,10 @@ $("#csv").on('click', _ => {
 $("#json").on('click', _ => {
     if ($("#dataInizio").val() <= $("#dataFine").val()) {
         if (getCheckedChats().length > 0) {
-            $('#md5_files').text('Non richiesto');
-            $('#sha_files').text('Non richiesto');
-            $('#md5_medias').text('Non richiesto');
-            $('#sha_medias').text('Non richiesto');
+            $('#md5_files').text('Errore');
+            $('#sha_files').text('Errore');
+            $('#report_url').prop('href', '').text('');
+            $('#zip_url').prop('href', '').text('');
             $("#dataFine,#dataInizio").attr('class', 'form-control is-valid');
             $('#modalLoading').modal({backdrop: 'true', keyboard: false, show: true, focus: true}).modal('show');
             $('#modalTitle').text('Creazione file csv in corso...');
@@ -191,16 +191,13 @@ sendChats = (type = 'csv', chats = getCheckedChats()) => {
         success: (result) => {
             if(!$('#media').prop('checked')){
                 $('#modalLoading').modal('hide');
-                let newWin = window.open(result.report.url);
                 $('#md5_files').text(result.report.md5);
                 $('#sha_files').text(result.report.sha256);
-                window.open(result.zip);
-                if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
-                    alert("Consenti i popup dal tuo browser.");
-                }
-                $('#modalHash').modal('show').on('hide.bs.modal', function () {
-                    $('#modalLoading').modal('hide');
-                });
+                let href = window.location.href;
+                let dir = href.substring(0, href.lastIndexOf('/'));
+                $('#report_url').prop('href', result.report.url).text(dir + result.report.url.substring(1));
+                $('#zip_url').prop('href', result.zip).text(dir + result.zip.substring(1));
+                $('#modalHash').modal('show');
             }else{
                 $('#modalTitle').text('Creazione della cartella contenente i media...');
                 $('#modalStripe').addClass('bg-warning').attr('aria-valuenow', 0).width('0%');
@@ -248,14 +245,13 @@ checkMediaDownloadStatus = (media_num, zipName, reportUrl, reportName) => {
             if (status) {
                 $("#modalLoading").modal('hide');
                 $('#modalStripe').removeClass('bg-warning');
-                let newWin = window.open(result.url);
-                window.open(reportUrl);
                 $('#md5_files').text(result.md5);
                 $('#sha_files').text(result.sha256);
-                if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
-                    alert("Consenti i popup dal tuo browser.");
-                }
-                $('#modalHash').modal('show').off('hide.bs.modal');
+                let href = window.location.href;
+                let dir = href.substring(0, href.lastIndexOf('/'));
+                $('#report_url').prop('href', reportUrl).text(dir + reportUrl.substring(1));
+                $('#zip_url').prop('href', result.url).text(dir + result.url.substring(1));
+                $('#modalHash').modal('show');
             } else {
                 setTimeout(checkMediaDownloadStatus.bind(null, media_num, zipName, reportUrl, reportName), 5000);
             }

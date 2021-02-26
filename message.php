@@ -165,23 +165,13 @@ require 'layouts/head.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table">
-                    <tr>
-                        <td scope="col"><b>Hash</b></td>
-                        <td scope="col"><b>Zip con i File</b></td>
-                        <td scope="col"><b>Zip con i Media</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>MD5</b></td>
-                        <td><p id="md5_files" class="text-break">Non richiesto</p></td>
-                        <td><p id="md5_medias" class="text-break">Non richiesto</p></td>
-                    </tr>
-                    <tr>
-                        <td><b>SHA256</b></td>
-                        <td><p id="sha_files" class="text-break">Non richiesto</p></td>
-                        <td><p id="sha_medias" class="text-break">Non richiesto</p></td>
-                    </tr>
-                </table>
+                <ul style="list-style-type:none;">
+                    <li><b>Hash del report MD5: </b><p id="md5_files" class="text-break">Errore</p></li>
+                    <li><b>Hash del report SHA256: </b><p id="sha_files" class="text-break">Errore</p></li>
+                </ul>
+                <br/>
+                <p>Link per scaricare il report: <a href="" id="report_url" download>Download</a></p>
+                <p>Link per scaricare il file zip: <a href="" id="zip_url" download>Download</a></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
