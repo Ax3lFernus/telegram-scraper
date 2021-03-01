@@ -56,10 +56,16 @@ $("#check_all_chats").click(function () {
 });
 
 $("input[type=checkbox][name='user']").click(() => {
-    if ($("input[name='user']:checked").length === $("input[name='user']").length)
+    if ($("input[name='user']:checked:visible").length === $("input[name='user']:visible").length) {
         $("#check_all_chats").prop('checked', true);
-    else
+        $('#checkboxlist').find('input:checkbox').prop("disabled", "disabled");
+        $('#search').prop("disabled", "disabled");
+    }
+    else {
         $("#check_all_chats").prop('checked', false);
+        $('#checkboxlist').find('input:checkbox').prop("disabled", false);
+        $('#search').prop("disabled", false);
+    }
 });
 
 
