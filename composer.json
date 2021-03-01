@@ -2,7 +2,7 @@
     "name": "ax3lfernus/telegramscraper",
     "description": "A simple Telegram Scraper.",
     "type": "project",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "require": {
         "vlucas/phpdotenv": "^5.3",
         "ralouphie/mimey": "^2.1",
