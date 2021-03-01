@@ -9,7 +9,7 @@ if (isset($_COOKIE['token'])) {
         foreach ($o->response->sessions as $session) {
             if ($session->session == $token && $session->status == "LOGGED_IN") {
                 $find = true;
-                continue;
+                break;
             }
         }
         if ($find) {

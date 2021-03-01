@@ -1,17 +1,17 @@
 <?php
-$tmpDir = dirname(__DIR__, 1) . '/tmp/' . $token. '/medias';
+$mediaDir = $filesDir . '/medias';
 
-if (file_exists($tmpDir)) {
-    delete_directory($tmpDir);
+if (file_exists($mediaDir)) {
+    delete_directory($mediaDir);
 }
-mkdir($tmpDir, 0777, true);
+mkdir($mediaDir, 0777, true);
 
 foreach ($media as $m) {
-    downloadFileToDir($baseUrl . 'api/users/' . $token . '/getMedia?data[peer]=' . $m[0] . '&data[id][]=' . $m[1], $tmpDir . '/' . $m[2]);
-    sleep(2);
+    downloadFileToDir($baseUrl . 'api/users/' . $token . '/getMedia?data[peer]=' . $m[0] . '&data[id][]=' . $m[1], $mediaDir . '/' . $m[2]);
+    sleep(1);
 }
-zipFolder($tmpDir, $zipName . '_medias');
-if (file_exists($tmpDir)) {
-    delete_directory($tmpDir);
+zipFolder($filesDir, $zipName . '_' . $request_date_underscore);
+if (file_exists($filesDir)) {
+    delete_directory($filesDir);
 }
-die();
+require __DIR__ . '/getReport.php';
